@@ -19,9 +19,9 @@ namespace AddressBookProgram
             //Details.AddContact(contact_Input3);
             Details.getPersonDetails();
 
-            Console.WriteLine("Select the contact first and last name you want to edit : ");
-            String edit_Contact_Input = Console.ReadLine();
-            Details.EditContactDetails(edit_Contact_Input);
+            Console.WriteLine("Select the contact first and last name you want to delete : ");
+            String delete_Contact_Input = Console.ReadLine();
+            Details.DeleteContact(delete_Contact_Input);
             Details.getPersonDetails();
 
 

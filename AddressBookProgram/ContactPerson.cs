@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
 
 namespace AddressBookProgram
 {
@@ -65,6 +66,26 @@ namespace AddressBookProgram
                 }
                
             }
+        }
+
+        public void DeleteContact(String input_detail)
+        {
+            int to_Be_Deleted = 4; ;
+            int count=-1 ;
+            foreach (ContactPerson person in contact_List)
+            {
+                count++;
+                if (input_detail.CompareTo(person.detail_Field_Value[0] + "," + person.detail_Field_Value[1]) == 0)
+                {
+                     to_Be_Deleted = count;
+                                
+
+                }
+
+            }
+            //Console.WriteLine(to_Be_Deleted);
+            contact_List.RemoveAt(to_Be_Deleted);
+
         }
         public void EditContactDetails(String input_detail)
         {
