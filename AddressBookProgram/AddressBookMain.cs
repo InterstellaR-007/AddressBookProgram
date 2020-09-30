@@ -2,7 +2,7 @@
 
 namespace AddressBookProgram
 {
-    class Program
+    class AddressBookMain
     {
         static void Main(string[] args)
         {
