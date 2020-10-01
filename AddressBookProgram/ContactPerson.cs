@@ -24,14 +24,7 @@ namespace AddressBookProgram
         }
         //Dictionary<String, int> field_map = {["irst_name",1],["last_name",2] };
         
-        private String first_Name;
-        private String last_Name;
-        private String address;
-        private String city;
-        private String state;
-        private String pincode;
-        private String phone_Number;
-        private String email;
+        
         private String details_InOne;
         private String[] detail_Field_Value = new String[8];
         ArrayList contact_List = new ArrayList();
@@ -47,9 +40,9 @@ namespace AddressBookProgram
             {
                 person.detail_Field_Value[i] = input_Field_Value[i]; 
             }
-            //Console.WriteLine(person.detail_Field_Value[1]);
 
             contact_List.Add(person);
+
             }
 
         public void getPersonDetails()
