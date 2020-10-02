@@ -8,24 +8,29 @@ using System.Threading;
 
 namespace AddressBookProgram
 {
-    class ContactDetails
+    class ContactDetails: IClassDetails
     {
         public ContactDetails()
         {
-            Dictionary<String, int> field_map = new Dictionary<string, int>();
-            field_map.Add("first_Name", 0);
-            field_map.Add("last_Name", 1);
-            field_map.Add("address", 2);
-            field_map.Add("city", 3);
-            field_map.Add("state", 4);
-            field_map.Add("pincode", 5);
-            field_map.Add("phone_Number", 6);
-            field_map.Add("email_Id", 7);
+            
+            Dictionary<int,String> field_map = new Dictionary<int, String>();
+            field_map.Add( 0, "first_Name");
+            field_map.Add(1, "last_Name");
+            field_map.Add(2,"address");
+            field_map.Add(3, "city");
+            field_map.Add(4, "state");
+            field_map.Add( 5, "pincode");
+            field_map.Add( 6, "phone_Number");
+            field_map.Add( 7, "email_Id");
         }
-        //Dictionary<String, int> field_map = {["irst_name",1],["last_name",2] };
+        public void set_AddressBook_Name(String unique_Name)
+        {
+            this.unique_Name = unique_Name;
+        }
+       
+
+        private String unique_Name;
         
-        
-        private String details_InOne;
         private String[] detail_Field_Value = new String[8];
         ArrayList contact_List = new ArrayList();
 
@@ -48,7 +53,7 @@ namespace AddressBookProgram
 
         public void getPersonDetails()
         {
-            Console.WriteLine("No of Contacts in Database: " + contact_List.Count);
+            
             if (contact_List.Count == 0)
                 Console.WriteLine("No records exist");
             else
@@ -85,7 +90,7 @@ namespace AddressBookProgram
                 }
 
             }
-            //Console.WriteLine(to_Be_Deleted);
+            
             contact_List.RemoveAt(to_Be_Deleted);
             Console.WriteLine("Contact Deleted");
 
