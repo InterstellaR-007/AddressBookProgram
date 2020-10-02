@@ -8,9 +8,9 @@ using System.Threading;
 
 namespace AddressBookProgram
 {
-    class ContactPerson
+    class ContactDetails
     {
-        public ContactPerson()
+        public ContactDetails()
         {
             Dictionary<String, int> field_map = new Dictionary<string, int>();
             field_map.Add("first_Name", 0);
@@ -35,29 +35,38 @@ namespace AddressBookProgram
             input_Field_Value = input_string.Split(",");
             
             
-            ContactPerson person = new ContactPerson();
+            ContactDetails person = new ContactDetails();
             for(int i =0;i<8;i++)
             {
                 person.detail_Field_Value[i] = input_Field_Value[i]; 
             }
 
             contact_List.Add(person);
+            Console.WriteLine("Contact Added");
 
             }
 
         public void getPersonDetails()
         {
-            foreach(ContactPerson person in contact_List)
+            Console.WriteLine("No of Contacts in Database: " + contact_List.Count);
+            if (contact_List.Count == 0)
+                Console.WriteLine("No records exist");
+            else
             {
-                Console.WriteLine("\n"+"Entered Details is : " +"\n" );
-                
-                
-                foreach(String s in person.detail_Field_Value)
+                Console.WriteLine("No of Contacts in Database: " + contact_List.Count);
+                foreach (ContactDetails person in contact_List)
                 {
-                    Console.WriteLine("\t"+ s);
-                    
+                    Console.WriteLine("\n" + " Person Details are : " + "\n");
+
+
+                    foreach (String s in person.detail_Field_Value)
+                    {
+                        Console.WriteLine("\t" + s);
+
+                    }
+
                 }
-               
+
             }
         }
 
@@ -65,7 +74,7 @@ namespace AddressBookProgram
         {
             int to_Be_Deleted = 4; ;
             int count=-1 ;
-            foreach (ContactPerson person in contact_List)
+            foreach (ContactDetails person in contact_List)
             {
                 count++;
                 if (input_detail.CompareTo(person.detail_Field_Value[0] + "," + person.detail_Field_Value[1]) == 0)
@@ -78,14 +87,17 @@ namespace AddressBookProgram
             }
             //Console.WriteLine(to_Be_Deleted);
             contact_List.RemoveAt(to_Be_Deleted);
+            Console.WriteLine("Contact Deleted");
 
         }
         public void EditContactDetails(String input_detail)
         {
-            foreach(ContactPerson person in contact_List)
+            Boolean contact_Found = false;
+            foreach(ContactDetails person in contact_List)
             {
                 if (input_detail.CompareTo(person.detail_Field_Value[0] + "," + person.detail_Field_Value[1]) == 0)
                 {
+                    contact_Found = true;
                     Console.WriteLine("\n"+"Which detail field you want to edit of this person: ");
                     Console.WriteLine("0:fn 1:ln 2:add 3:city 4:state 5:pincode 6:phn 7:emailId" +"\n");
 
@@ -93,11 +105,15 @@ namespace AddressBookProgram
 
                     Console.WriteLine("Enter the updated field data");
                     person.detail_Field_Value[field] = Console.ReadLine();
-                    
+                    Console.WriteLine("Contact Editied");
+
                 }
+     
             }
-            
-           
+            if(contact_Found==false)
+                Console.WriteLine("Contact not found");
+
+
         }
     }
 }
