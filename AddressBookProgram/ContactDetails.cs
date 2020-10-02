@@ -4,9 +4,9 @@ using System.Text;
 
 namespace AddressBookProgram
 {
-    class AddContacts
+    class ContactDetails
     {
-        public AddContacts()
+        public ContactDetails()
         {
 
         }
