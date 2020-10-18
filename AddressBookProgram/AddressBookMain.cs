@@ -46,7 +46,8 @@ namespace AddressBookProgram
                         Console.WriteLine("1: Add a Contact ");
                         Console.WriteLine("2: Edit an existing Contact ");
                         Console.WriteLine("3: Delete an exisiting Contact ");
-                        Console.WriteLine("4: Display Contact Details entered \n ");
+                        Console.WriteLine("4: Display Contact Details entered ");
+                        Console.WriteLine("5: Search a Person by City or State \n");
 
                         input_Option = int.Parse(Console.ReadLine());
                         switch (input_Option)
@@ -62,6 +63,7 @@ namespace AddressBookProgram
                                 }
 
                                 new_AddressBook.AddContact(input_String);
+                                input_String = "";
                                 break;
 
                             case 2:
@@ -78,6 +80,10 @@ namespace AddressBookProgram
 
                             case 4:
                                 new_AddressBook.getPersonDetails();
+                                break;
+
+                            case 5:
+                                new_AddressBook.get_PersonDetails_By_City_or_State();
                                 break;
 
                             default:

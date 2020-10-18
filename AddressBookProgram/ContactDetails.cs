@@ -10,6 +10,25 @@ namespace AddressBookProgram
 {
     class ContactDetails: IClassDetails
     {
+
+        public void get_PersonDetails_By_City_or_State()
+        {
+            Console.WriteLine("Enter the city or state:");
+            string input_Detail = Console.ReadLine();
+            Boolean detail_Found = false;
+            foreach(ContactDetails person in contact_List)
+            {
+                if (person.detail_Field_Value[3] == input_Detail || person.detail_Field_Value[4] == input_Detail) 
+                {
+                    Console.WriteLine("\n" + "First Name\t" + "Last Name\t" + "Address\t" + "City\t" + "State\t" + "Pincode\t" + "Email\t");
+                    Console.WriteLine("\n" + person.detail_Field_Value[0] + "\t" + person.detail_Field_Value[1] + "\t" + person.detail_Field_Value[2] + "\t" + person.detail_Field_Value[3] + "\t" + person.detail_Field_Value[4] + "\t" + person.detail_Field_Value[5] + "\t" + person.detail_Field_Value[6] + "\t" + person.detail_Field_Value[7] + "\t");
+
+                    detail_Found = true;
+                }
+            }
+            if (!detail_Found)
+                Console.WriteLine("No details Found");
+        }
         public ContactDetails()
         {
             
@@ -83,12 +102,9 @@ namespace AddressBookProgram
                 {
                     Console.WriteLine("\n" + " Person Details are : " + "\n");
 
-
-                    foreach (String s in person.detail_Field_Value)
-                    {
-                        Console.WriteLine("\t" + s);
-
-                    }
+                    Console.WriteLine("\n" + "First Name\t"+"Last Name\t"+ "Address\t"+"City\t" + "State\t" + "Pincode\t" + "Email\t");
+                    Console.WriteLine("\n" + person.detail_Field_Value[0] +"\t" + person.detail_Field_Value[1] + "\t"+ person.detail_Field_Value[2] + "\t" + person.detail_Field_Value[3] + "\t"+person.detail_Field_Value[4] + "\t"+ person.detail_Field_Value[5] + "\t" + person.detail_Field_Value[6] + "\t" + person.detail_Field_Value[7] + "\t");
+                    
 
                 }
 
