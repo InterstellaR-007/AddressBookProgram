@@ -10,21 +10,31 @@ namespace AddressBookProgram
 {
     class ContactDetails: IClassDetails
     {
+        Dictionary<String, String> PersonDetailsByCity = new Dictionary<string, string>();
+        Dictionary<String, String> PersonDetailsByState = new Dictionary<string, string>();
 
         public void get_PersonDetails_By_City_or_State()
         {
             Console.WriteLine("Enter the city or state:");
             string input_Detail = Console.ReadLine();
             Boolean detail_Found = false;
-            foreach(ContactDetails person in contact_List)
+            foreach(var person in PersonDetailsByCity)
             {
-                if (person.detail_Field_Value[3] == input_Detail || person.detail_Field_Value[4] == input_Detail) 
+                if (person.Value.Equals(input_Detail))
                 {
-                    Console.WriteLine("\n" + "First Name\t" + "Last Name\t" + "Address\t" + "City\t" + "State\t" + "Pincode\t" + "Email\t");
-                    Console.WriteLine("\n" + person.detail_Field_Value[0] + "\t" + person.detail_Field_Value[1] + "\t" + person.detail_Field_Value[2] + "\t" + person.detail_Field_Value[3] + "\t" + person.detail_Field_Value[4] + "\t" + person.detail_Field_Value[5] + "\t" + person.detail_Field_Value[6] + "\t" + person.detail_Field_Value[7] + "\t");
-
+                    Console.WriteLine("Searched Name is: " + person.Key);
                     detail_Found = true;
                 }
+                
+            }
+            foreach (var person in PersonDetailsByState)
+            {
+                if (person.Value.Equals(input_Detail))
+                {
+                    Console.WriteLine("Searched Name is: " + person.Key);
+                    detail_Found = true;
+                }
+
             }
             if (!detail_Found)
                 Console.WriteLine("No details Found");
@@ -82,6 +92,10 @@ namespace AddressBookProgram
                 {
                     person.detail_Field_Value[i] = input_Field_Value[i];
                 }
+
+                PersonDetailsByCity.Add(person.detail_Field_Value[0] + " " + person.detail_Field_Value[1], person.detail_Field_Value[3]);
+
+                PersonDetailsByState.Add(person.detail_Field_Value[0] + " " + person.detail_Field_Value[1], person.detail_Field_Value[4]);
                 contact_List.Add(person);
                 Console.WriteLine("Contact Added");
             }
