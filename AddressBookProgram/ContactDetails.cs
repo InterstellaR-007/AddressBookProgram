@@ -31,23 +31,43 @@ namespace AddressBookProgram
 
         private String unique_Name;
         
-        private String[] detail_Field_Value = new String[8];
+        public String[] detail_Field_Value = new String[8];
         ArrayList contact_List = new ArrayList();
+
+        public Boolean CheckDuplicate(String first_Name,String last_Name)
+        {
+            foreach (ContactDetails person in contact_List)
+            {
+                if (person.detail_Field_Value[0].Equals(first_Name) && person.detail_Field_Value[1].Equals(last_Name))
+                    return true;
+              
+            }
+            return false;
+        }
 
         public void AddContact(String input_string)
             {
+
             String[] input_Field_Value = new String[8];
             input_Field_Value = input_string.Split(",");
             
-            
-            ContactDetails person = new ContactDetails();
-            for(int i =0;i<8;i++)
+
+            if (CheckDuplicate(input_Field_Value[0],input_Field_Value[1]))
             {
-                person.detail_Field_Value[i] = input_Field_Value[i]; 
+                Console.WriteLine("Person already exists in Record");
+            }
+            else
+            {
+                ContactDetails person = new ContactDetails();
+                for (int i = 0; i < 8; i++)
+                {
+                    person.detail_Field_Value[i] = input_Field_Value[i];
+                }
+                contact_List.Add(person);
+                Console.WriteLine("Contact Added");
             }
 
-            contact_List.Add(person);
-            Console.WriteLine("Contact Added");
+            
 
             }
 
