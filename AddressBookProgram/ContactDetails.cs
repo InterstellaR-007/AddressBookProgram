@@ -15,29 +15,44 @@ namespace AddressBookProgram
 
         public void get_PersonDetails_By_City_or_State()
         {
+            int count_ByState = 0;
+            int count_ByCity = 0;
+            
             Console.WriteLine("Enter the city or state:");
             string input_Detail = Console.ReadLine();
-            Boolean detail_Found = false;
-            foreach(var person in PersonDetailsByCity)
+            Boolean city_Detail_Found = false;
+            Boolean state_Detail_Found = false;
+            foreach (var person in PersonDetailsByCity)
             {
                 if (person.Value.Equals(input_Detail))
                 {
                     Console.WriteLine("Searched Name is: " + person.Key);
-                    detail_Found = true;
+                    count_ByCity++;
+                    city_Detail_Found = true;
                 }
                 
             }
+            
             foreach (var person in PersonDetailsByState)
             {
                 if (person.Value.Equals(input_Detail))
                 {
                     Console.WriteLine("Searched Name is: " + person.Key);
-                    detail_Found = true;
+                    count_ByState++;
+                    state_Detail_Found = true;
                 }
 
             }
-            if (!detail_Found)
+            if (!city_Detail_Found && !state_Detail_Found)
                 Console.WriteLine("No details Found");
+            else if(city_Detail_Found)
+            {
+                Console.WriteLine("Total number of persons living in " + input_Detail + " are:" + count_ByCity);
+            }
+            else
+            {
+                Console.WriteLine("Total number of persons living in " + input_Detail + " are:" + count_ByState);
+            }
         }
         public ContactDetails()
         {
