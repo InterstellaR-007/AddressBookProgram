@@ -76,10 +76,12 @@ namespace AddressBookProgram
         private String unique_Name;
         
         public String[] detail_Field_Value = new String[8];
-        ArrayList contact_List = new ArrayList();
+        IList<ContactDetails> contact_List = new List<ContactDetails>();
 
         public Boolean CheckDuplicate(String first_Name,String last_Name)
         {
+            //var find_Duplicate = contact_List.Contains();
+
             foreach (ContactDetails person in contact_List)
             {
                 if (person.detail_Field_Value[0].Equals(first_Name) && person.detail_Field_Value[1].Equals(last_Name))
@@ -127,11 +129,12 @@ namespace AddressBookProgram
             else
             {
                 Console.WriteLine("No of Contacts in Database: " + contact_List.Count);
+                Console.WriteLine("\n" + "First Name\t" + "Last Name\t" + "Address\t" + "City\t" + "State\t" + "Pincode\t" + "Email\t");
                 foreach (ContactDetails person in contact_List)
                 {
                     Console.WriteLine("\n" + " Person Details are : " + "\n");
 
-                    Console.WriteLine("\n" + "First Name\t"+"Last Name\t"+ "Address\t"+"City\t" + "State\t" + "Pincode\t" + "Email\t");
+                    
                     Console.WriteLine("\n" + person.detail_Field_Value[0] +"\t" + person.detail_Field_Value[1] + "\t"+ person.detail_Field_Value[2] + "\t" + person.detail_Field_Value[3] + "\t"+person.detail_Field_Value[4] + "\t"+ person.detail_Field_Value[5] + "\t" + person.detail_Field_Value[6] + "\t" + person.detail_Field_Value[7] + "\t");
                     
 
