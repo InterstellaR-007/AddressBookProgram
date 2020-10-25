@@ -11,6 +11,8 @@ namespace AddressBookProgram
         public void AddContact(String input_string);
         public void getPersonDetails();
         public void get_PersonDetails_By_City_or_State();
+
+        public void sort_Aphabetically();
         public void DeleteContact(String input_detail);
         public void EditContactDetails(String input_detail);
 

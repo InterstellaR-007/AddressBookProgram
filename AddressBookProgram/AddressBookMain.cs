@@ -48,6 +48,7 @@ namespace AddressBookProgram
                         Console.WriteLine("3: Delete an exisiting Contact ");
                         Console.WriteLine("4: Display Contact Details entered ");
                         Console.WriteLine("5: Search a Person by City or State \n");
+                        Console.WriteLine("6: Sort by Name");
 
                         input_Option = int.Parse(Console.ReadLine());
                         switch (input_Option)
@@ -84,6 +85,10 @@ namespace AddressBookProgram
 
                             case 5:
                                 new_AddressBook.get_PersonDetails_By_City_or_State();
+                                break;
+
+                            case 6:
+                                new_AddressBook.sort_Aphabetically();
                                 break;
 
                             default:

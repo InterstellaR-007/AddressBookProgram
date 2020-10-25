@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
@@ -76,7 +77,7 @@ namespace AddressBookProgram
         private String unique_Name;
         
         public String[] detail_Field_Value = new String[8];
-        IList<ContactDetails> contact_List = new List<ContactDetails>();
+        List<ContactDetails> contact_List = new List<ContactDetails>();
 
         public Boolean CheckDuplicate(String first_Name,String last_Name)
         {
@@ -89,6 +90,18 @@ namespace AddressBookProgram
               
             }
             return false;
+        }
+
+        public void sort_Aphabetically()
+        {
+            if (contact_List.Count == 0)
+                Console.WriteLine("No data Entered to sort");
+            else
+            {
+                List<ContactDetails> sorted_Contact_List = new List<ContactDetails>();
+                contact_List.Sort((x, y) => x.detail_Field_Value[0].CompareTo(y.detail_Field_Value[0]));
+                Console.WriteLine("Sorting is Done using First name");
+            }
         }
 
         public void AddContact(String input_string)
