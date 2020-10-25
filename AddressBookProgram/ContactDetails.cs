@@ -91,7 +91,31 @@ namespace AddressBookProgram
             }
             return false;
         }
+        public void sort_By_StateCityZip()
+        {
+            Console.WriteLine("Enter the field to be sorted : 1- City 2- State 3- Zip");
+            int input_field = int.Parse(Console.ReadLine());
 
+            switch (input_field)
+            {
+                case 1:
+                    contact_List.Sort((x, y) => x.detail_Field_Value[3].CompareTo(y.detail_Field_Value[3]));
+                    Console.WriteLine("Sorting is Done using City");
+                    getPersonDetails();
+                    break;
+                case 2:
+                    contact_List.Sort((x, y) => x.detail_Field_Value[4].CompareTo(y.detail_Field_Value[4]));
+                    Console.WriteLine("Sorting is Done using State");
+                    getPersonDetails();
+                    break;
+                case 3:
+                    contact_List.Sort((x, y) => x.detail_Field_Value[5].CompareTo(y.detail_Field_Value[5]));
+                    Console.WriteLine("Sorting is Done using Zip Code");
+                    getPersonDetails();
+                    break;
+
+            }
+        }
         public void sort_Aphabetically()
         {
             if (contact_List.Count == 0)
@@ -142,13 +166,14 @@ namespace AddressBookProgram
             else
             {
                 Console.WriteLine("No of Contacts in Database: " + contact_List.Count);
-                Console.WriteLine("\n" + "First Name\t" + "Last Name\t" + "Address\t" + "City\t" + "State\t" + "Pincode\t" + "Email\t");
+                Console.WriteLine(String.Format("{0,-12}{1,-12}{2,-12}{3,-12}{4,-12}{5,-12}{6,-12}{7,-12}\n", "First Name", "Last Name", "Address", "City","State","PinCode","phn Num","Email"));
                 foreach (ContactDetails person in contact_List)
                 {
-                    Console.WriteLine("\n" + " Person Details are : " + "\n");
+                    //Console.WriteLine("\n" + " Person Details are : " + "\n");
 
-                    
-                    Console.WriteLine("\n" + person.detail_Field_Value[0] +"\t" + person.detail_Field_Value[1] + "\t"+ person.detail_Field_Value[2] + "\t" + person.detail_Field_Value[3] + "\t"+person.detail_Field_Value[4] + "\t"+ person.detail_Field_Value[5] + "\t" + person.detail_Field_Value[6] + "\t" + person.detail_Field_Value[7] + "\t");
+                    string tabular_Output = String.Format("{0,-12}{1,-12}{2,-12}{3,-12}{4,-12}{5,-12}{6,-12}{7,-12}", person.detail_Field_Value[0], person.detail_Field_Value[1], person.detail_Field_Value[2], person.detail_Field_Value[3], person.detail_Field_Value[4], person.detail_Field_Value[5], person.detail_Field_Value[6], person.detail_Field_Value[7]);
+                    Console.WriteLine(tabular_Output);
+                    //Console.WriteLine("\n" + person.detail_Field_Value[0] +"\t" + person.detail_Field_Value[1] + "\t"+ person.detail_Field_Value[2] + "\t" + person.detail_Field_Value[3] + "\t"+person.detail_Field_Value[4] + "\t"+ person.detail_Field_Value[5] + "\t" + person.detail_Field_Value[6] + "\t" + person.detail_Field_Value[7] + "\t");
                     
 
                 }

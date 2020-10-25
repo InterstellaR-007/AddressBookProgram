@@ -34,7 +34,7 @@ namespace AddressBookProgram
                 if (Console.ReadLine() == "y")
                 {
                     ContactDetails new_AddressBook = new ContactDetails();
-                    Console.WriteLine("\n Enter the Address Book name: ");
+                    Console.WriteLine("\nEnter the Address Book name: ");
                     String unique_Name = Console.ReadLine();
                     new_AddressBook.set_AddressBook_Name(unique_Name);
                     address_book_list.Add(unique_Name, new_AddressBook);
@@ -47,15 +47,16 @@ namespace AddressBookProgram
                         Console.WriteLine("2: Edit an existing Contact ");
                         Console.WriteLine("3: Delete an exisiting Contact ");
                         Console.WriteLine("4: Display Contact Details entered ");
-                        Console.WriteLine("5: Search a Person by City or State \n");
-                        Console.WriteLine("6: Sort by Name");
+                        Console.WriteLine("5: Search a Person by City or State ");
+                        Console.WriteLine("6: Sort by Name ");
+                        Console.WriteLine("7: Sort by City/State/PinCode \n");
 
                         input_Option = int.Parse(Console.ReadLine());
                         switch (input_Option)
                         {
 
                             case 1:
-                                Console.WriteLine("\n Enter the Contact details of a person : \n");
+                                Console.WriteLine("Enter the Contact details of a person : \n");
                                 foreach (var i in field_map)
                                 {
                                     Console.WriteLine(i.Key + ":");
@@ -89,6 +90,10 @@ namespace AddressBookProgram
 
                             case 6:
                                 new_AddressBook.sort_Aphabetically();
+                                break;
+
+                            case 7:
+                                new_AddressBook.sort_By_StateCityZip();
                                 break;
 
                             default:
