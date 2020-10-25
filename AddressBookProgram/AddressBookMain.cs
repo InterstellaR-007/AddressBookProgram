@@ -7,7 +7,7 @@ namespace AddressBookProgram
     {
         static void Main(string[] args)
         {
-            Dictionary<String,ContactDetails> address_book_list = new Dictionary<string,ContactDetails>();
+            Dictionary<String,ContactDetailsBuilder> address_book_list = new Dictionary<string,ContactDetailsBuilder>();
             Dictionary<String, int> field_map = new Dictionary<string, int>();
             field_map.Add("first_Name", 0);
             field_map.Add("last_Name", 1);
@@ -33,10 +33,11 @@ namespace AddressBookProgram
                 
                 if (Console.ReadLine() == "y")
                 {
-                    ContactDetails new_AddressBook = new ContactDetails();
+                    ContactDetailsBuilder new_AddressBook = new ContactDetailsBuilder();
                     Console.WriteLine("\nEnter the Address Book name: ");
                     String unique_Name = Console.ReadLine();
                     new_AddressBook.set_AddressBook_Name(unique_Name);
+                    
                     address_book_list.Add(unique_Name, new_AddressBook);
 
                     while (exit_Prgram != true)
@@ -50,6 +51,8 @@ namespace AddressBookProgram
                         Console.WriteLine("5: Search a Person by City or State ");
                         Console.WriteLine("6: Sort by Name ");
                         Console.WriteLine("7: Sort by City/State/PinCode \n");
+                        Console.WriteLine("8: Write to Address Book txt file\n");
+                        Console.WriteLine("9: Read from Address Book txt file\n");
 
                         input_Option = int.Parse(Console.ReadLine());
                         switch (input_Option)
@@ -94,6 +97,12 @@ namespace AddressBookProgram
 
                             case 7:
                                 new_AddressBook.sort_By_StateCityZip();
+                                break;
+                            case 8:
+                                new_AddressBook.WriteToAddressBook_UsingIO();
+                                break;
+                            case 9:
+                                new_AddressBook.ReadFromAddressBook_UsingIO();
                                 break;
 
                             default:

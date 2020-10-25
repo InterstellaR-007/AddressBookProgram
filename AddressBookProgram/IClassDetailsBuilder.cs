@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AddressBookProgram
 {
-    interface IClassDetails
+    interface IClassDetailsBuilder
     {
 
         public void set_AddressBook_Name(String unique_Name);
@@ -13,6 +13,8 @@ namespace AddressBookProgram
         public void get_PersonDetails_By_City_or_State();
 
         public void sort_By_StateCityZip();
+        public void WriteToAddressBook_UsingIO();
+        public void ReadFromAddressBook_UsingIO();
 
         public void sort_Aphabetically();
         public void DeleteContact(String input_detail);

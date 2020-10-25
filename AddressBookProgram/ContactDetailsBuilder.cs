@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -9,10 +10,11 @@ using System.Threading;
 
 namespace AddressBookProgram
 {
-    class ContactDetails: IClassDetails
+    class ContactDetailsBuilder: IClassDetailsBuilder
     {
         Dictionary<String, String> PersonDetailsByCity = new Dictionary<string, string>();
         Dictionary<String, String> PersonDetailsByState = new Dictionary<string, string>();
+        string Field_Title = String.Format("{0,-12}{1,-12}{2,-12}{3,-12}{4,-12}{5,-12}{6,-12}{7,-12}\n", "First Name", "Last Name", "Address", "City", "State", "PinCode", "phn Num", "Email");
 
         public void get_PersonDetails_By_City_or_State()
         {
@@ -55,7 +57,7 @@ namespace AddressBookProgram
                 Console.WriteLine("Total number of persons living in " + input_Detail + " are:" + count_ByState);
             }
         }
-        public ContactDetails()
+        public ContactDetailsBuilder()
         {
             
             Dictionary<int,String> field_map = new Dictionary<int, String>();
@@ -75,17 +77,18 @@ namespace AddressBookProgram
        
 
         private String unique_Name;
-        
-        public String[] detail_Field_Value = new String[8];
-        List<ContactDetails> contact_List = new List<ContactDetails>();
+
+        //public String[] detail_Field_Value = new String[8];
+        ContactDetail contact = new ContactDetail();
+        List<ContactDetail> contact_List = new List<ContactDetail>();
 
         public Boolean CheckDuplicate(String first_Name,String last_Name)
         {
             //var find_Duplicate = contact_List.Contains();
 
-            foreach (ContactDetails person in contact_List)
+            foreach (ContactDetail person in contact_List)
             {
-                if (person.detail_Field_Value[0].Equals(first_Name) && person.detail_Field_Value[1].Equals(last_Name))
+                if (person.first_Name.Equals(first_Name) && person.last_Name.Equals(last_Name))
                     return true;
               
             }
@@ -99,17 +102,17 @@ namespace AddressBookProgram
             switch (input_field)
             {
                 case 1:
-                    contact_List.Sort((x, y) => x.detail_Field_Value[3].CompareTo(y.detail_Field_Value[3]));
+                    contact_List.Sort((x, y) => x.city.CompareTo(y.city));
                     Console.WriteLine("Sorting is Done using City");
                     getPersonDetails();
                     break;
                 case 2:
-                    contact_List.Sort((x, y) => x.detail_Field_Value[4].CompareTo(y.detail_Field_Value[4]));
+                    contact_List.Sort((x, y) => x.state.CompareTo(y.state));
                     Console.WriteLine("Sorting is Done using State");
                     getPersonDetails();
                     break;
                 case 3:
-                    contact_List.Sort((x, y) => x.detail_Field_Value[5].CompareTo(y.detail_Field_Value[5]));
+                    contact_List.Sort((x, y) => x.pincode.CompareTo(y.pincode));
                     Console.WriteLine("Sorting is Done using Zip Code");
                     getPersonDetails();
                     break;
@@ -122,8 +125,8 @@ namespace AddressBookProgram
                 Console.WriteLine("No data Entered to sort");
             else
             {
-                List<ContactDetails> sorted_Contact_List = new List<ContactDetails>();
-                contact_List.Sort((x, y) => x.detail_Field_Value[0].CompareTo(y.detail_Field_Value[0]));
+                List<ContactDetailsBuilder> sorted_Contact_List = new List<ContactDetailsBuilder>();
+                contact_List.Sort((x, y) => x.first_Name.CompareTo(y.first_Name));
                 Console.WriteLine("Sorting is Done using First name");
             }
         }
@@ -141,15 +144,21 @@ namespace AddressBookProgram
             }
             else
             {
-                ContactDetails person = new ContactDetails();
-                for (int i = 0; i < 8; i++)
-                {
-                    person.detail_Field_Value[i] = input_Field_Value[i];
-                }
+                ContactDetail person = new ContactDetail();
+                
+                person.first_Name = input_Field_Value[0];
+                person.last_Name = input_Field_Value[1];
+                person.address= input_Field_Value[2];
+                person.city = input_Field_Value[3];
+                person.state = input_Field_Value[4];
+                person.pincode = input_Field_Value[5];
+                person.phoneNum = input_Field_Value[6];
+                person.email = input_Field_Value[7];
 
-                PersonDetailsByCity.Add(person.detail_Field_Value[0] + " " + person.detail_Field_Value[1], person.detail_Field_Value[3]);
+                PersonDetailsByCity.Add(person.first_Name + " " + person.last_Name, person.city); ;
 
-                PersonDetailsByState.Add(person.detail_Field_Value[0] + " " + person.detail_Field_Value[1], person.detail_Field_Value[4]);
+                PersonDetailsByState.Add(person.first_Name + " " + person.last_Name, person.state);
+
                 contact_List.Add(person);
                 Console.WriteLine("Contact Added");
             }
@@ -166,18 +175,50 @@ namespace AddressBookProgram
             else
             {
                 Console.WriteLine("No of Contacts in Database: " + contact_List.Count);
-                Console.WriteLine(String.Format("{0,-12}{1,-12}{2,-12}{3,-12}{4,-12}{5,-12}{6,-12}{7,-12}\n", "First Name", "Last Name", "Address", "City","State","PinCode","phn Num","Email"));
-                foreach (ContactDetails person in contact_List)
+                Console.WriteLine(Field_Title);
+                foreach (ContactDetail person in contact_List)
                 {
-                    //Console.WriteLine("\n" + " Person Details are : " + "\n");
 
-                    string tabular_Output = String.Format("{0,-12}{1,-12}{2,-12}{3,-12}{4,-12}{5,-12}{6,-12}{7,-12}", person.detail_Field_Value[0], person.detail_Field_Value[1], person.detail_Field_Value[2], person.detail_Field_Value[3], person.detail_Field_Value[4], person.detail_Field_Value[5], person.detail_Field_Value[6], person.detail_Field_Value[7]);
+                    string tabular_Output = String.Format("{0,-12}{1,-12}{2,-12}{3,-12}{4,-12}{5,-12}{6,-12}{7,-12}", person.first_Name, person.last_Name, person.address, person.city, person.state, person.pincode, person.phoneNum, person.email);
                     Console.WriteLine(tabular_Output);
-                    //Console.WriteLine("\n" + person.detail_Field_Value[0] +"\t" + person.detail_Field_Value[1] + "\t"+ person.detail_Field_Value[2] + "\t" + person.detail_Field_Value[3] + "\t"+person.detail_Field_Value[4] + "\t"+ person.detail_Field_Value[5] + "\t" + person.detail_Field_Value[6] + "\t" + person.detail_Field_Value[7] + "\t");
-                    
 
                 }
 
+            }
+        }
+        public void WriteToAddressBook_UsingIO()
+        {
+            string path = @"C:\Users\anujs\Desktop\AddressBook.txt";
+            FileStream file = new FileStream(path, FileMode.OpenOrCreate,
+            FileAccess.ReadWrite);
+            using (StreamWriter sr = new StreamWriter(file))
+            {
+
+                foreach (ContactDetail person in contact_List)
+                {
+                    string tabular_Output = String.Format("{0,-12}{1,-12}{2,-12}{3,-12}{4,-12}{5,-12}{6,-12}{7,-12}", person.first_Name, person.last_Name, person.address, person.city, person.state, person.pincode, person.phoneNum, person.email);
+                    sr.WriteLine(tabular_Output);
+
+                }
+                Console.WriteLine("\n Done Writing \n");
+            }
+        }
+        public void ReadFromAddressBook_UsingIO()
+        {
+            string path = @"C:\Users\anujs\Desktop\AddressBook.txt";
+            FileStream file = new FileStream(path, FileMode.OpenOrCreate,
+            FileAccess.ReadWrite);
+            using (StreamReader sr = new StreamReader(file))
+            {
+                if (sr.ReadLine() == null)
+                    Console.WriteLine("\n AddressBook is Empty.");
+
+                String s = "";
+                while ((s = sr.ReadLine()) != null)
+                {
+                    Console.WriteLine(s);
+                }
+                Console.WriteLine("\n Done Reading \n");
             }
         }
 
@@ -185,10 +226,10 @@ namespace AddressBookProgram
         {
             int to_Be_Deleted = 4; ;
             int count=-1 ;
-            foreach (ContactDetails person in contact_List)
+            foreach (ContactDetail person in contact_List)
             {
                 count++;
-                if (input_detail.CompareTo(person.detail_Field_Value[0] + "," + person.detail_Field_Value[1]) == 0)
+                if (input_detail.CompareTo(person.first_Name + "," + person.last_Name) == 0)
                 {
                      to_Be_Deleted = count;
                                 
@@ -204,9 +245,9 @@ namespace AddressBookProgram
         public void EditContactDetails(String input_detail)
         {
             Boolean contact_Found = false;
-            foreach(ContactDetails person in contact_List)
+            foreach(ContactDetail person in contact_List)
             {
-                if (input_detail.CompareTo(person.detail_Field_Value[0] + "," + person.detail_Field_Value[1]) == 0)
+                if (input_detail.CompareTo(person.first_Name + "," + person.last_Name) == 0)
                 {
                     contact_Found = true;
                     Console.WriteLine("\n"+"Which detail field you want to edit of this person: ");
@@ -215,8 +256,43 @@ namespace AddressBookProgram
                     int field = int.Parse(Console.ReadLine());
 
                     Console.WriteLine("Enter the updated field data");
-                    person.detail_Field_Value[field] = Console.ReadLine();
-                    Console.WriteLine("Contact Editied");
+                    switch (field)
+                    {
+                        case 0:
+                            person.first_Name = Console.ReadLine();
+                            Console.WriteLine("Field Updated");
+                            break;
+                        case 1:
+                            person.last_Name = Console.ReadLine();
+                            Console.WriteLine("Field Updated");
+                            break;
+                        case 2:
+                            person.address = Console.ReadLine();
+                            Console.WriteLine("Field Updated");
+                            break;
+                        case 3:
+                            person.city = Console.ReadLine();
+                            Console.WriteLine("Field Updated");
+                            break;
+                        case 4:
+                            person.state = Console.ReadLine();
+                            Console.WriteLine("Field Updated");
+                            break;
+                        case 5:
+                            person.pincode = Console.ReadLine();
+                            Console.WriteLine("Field Updated");
+                            break;
+                        case 6:
+                            person.phoneNum = Console.ReadLine();
+                            Console.WriteLine("Field Updated");
+                            break;
+                        case 7:
+                            person.email = Console.ReadLine();
+                            Console.WriteLine("Field Updated");
+                            break;
+                    }
+
+                     
 
                 }
      
