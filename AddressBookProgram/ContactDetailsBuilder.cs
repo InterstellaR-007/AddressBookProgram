@@ -1,4 +1,5 @@
 ﻿using CsvHelper;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -197,50 +198,23 @@ namespace AddressBookProgram
         }
         public void WriteToAddressBook_UsingIO()
         {
-            string path = @"C:\Users\anujs\source\repos\AddressBookProgram\AddressBookProgram\AddressBook.csv";
-            FileStream file = new FileStream(path, FileMode.Create,
-            FileAccess.ReadWrite);
-            using (StreamWriter sr = new StreamWriter(file))
-            using(var csv = new CsvWriter(sr, CultureInfo.InvariantCulture))
-            {
-                
-                csv.WriteRecords(contact_List);
+            string path = @"C:\Users\anujs\source\repos\AddressBookProgram\AddressBookProgram\AddressBookJson.json";
 
-                Console.WriteLine("\n Done Writing \n");
+            JsonSerializer serializer = new JsonSerializer();
+            using(StreamWriter sw = new StreamWriter(path))
+            using(JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, contact_List);
             }
         }
         public void ReadFromAddressBook_UsingIO()
         {
-            string path = @"C:\Users\anujs\source\repos\AddressBookProgram\AddressBookProgram\AddressBook.csv";
+            string import_path = @"C:\Users\anujs\source\repos\AddressBookProgram\AddressBookProgram\AddressBookJson.json";
             //FileStream file = new FileStream(path, FileMode.Open,
             //FileAccess.ReadWrite);
-            using (StreamReader sr = new StreamReader(path))
-            using (var csv = new CsvReader(sr, CultureInfo.InvariantCulture))
-            {
-                if (sr.ReadLine() == null)
-                    Console.WriteLine("\n AddressBook is Empty.");
+            IList<ContactDetail> person_Contacts = JsonConvert.DeserializeObject < IList < ContactDetail >> (File.ReadAllText(import_path));
+            Console.WriteLine("Done Reading");
 
-                
-                else
-                {
-                    csv.Configuration.HeaderValidated = null;
-                    var records = csv.GetRecords<ContactDetail>().ToList();
-
-                    foreach (ContactDetail person in records)
-                    {
-                        //Console.Write("\t" + person.ff);
-                        Console.Write("\t" + person.last_Name);
-                        Console.Write("\t" + person.address);
-                        Console.Write("\t" + person.city);
-                        Console.Write("\t" + person.state);
-                        Console.Write("\t" + person.pincode);
-                        Console.Write("\t" + person.phoneNum);
-                        Console.Write("\t" + person.email);
-                        Console.Write("\n");
-                    }
-                }
-                Console.WriteLine("\n Done Reading \n");
-            }
         }
 
         public void DeleteContact(String input_detail)
