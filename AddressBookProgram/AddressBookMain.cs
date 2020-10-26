@@ -50,9 +50,9 @@ namespace AddressBookProgram
                         Console.WriteLine("4: Display Contact Details entered ");
                         Console.WriteLine("5: Search a Person by City or State ");
                         Console.WriteLine("6: Sort by Name ");
-                        Console.WriteLine("7: Sort by City/State/PinCode \n");
-                        Console.WriteLine("8: Write to Address Book txt file\n");
-                        Console.WriteLine("9: Read from Address Book txt file\n");
+                        Console.WriteLine("7: Sort by City/State/PinCode ");
+                        Console.WriteLine("8: Write to Address Book csv file");
+                        Console.WriteLine("9: Read from Address Book csv file\n");
 
                         input_Option = int.Parse(Console.ReadLine());
                         switch (input_Option)

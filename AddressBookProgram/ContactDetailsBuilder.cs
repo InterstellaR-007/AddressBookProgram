@@ -1,8 +1,12 @@
-﻿using System;
+﻿using CsvHelper;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -12,6 +16,8 @@ namespace AddressBookProgram
 {
     class ContactDetailsBuilder: IClassDetailsBuilder
     {
+        
+
         Dictionary<String, String> PersonDetailsByCity = new Dictionary<string, string>();
         Dictionary<String, String> PersonDetailsByState = new Dictionary<string, string>();
         string Field_Title = String.Format("{0,-12}{1,-12}{2,-12}{3,-12}{4,-12}{5,-12}{6,-12}{7,-12}\n", "First Name", "Last Name", "Address", "City", "State", "PinCode", "phn Num", "Email");
@@ -79,7 +85,7 @@ namespace AddressBookProgram
         private String unique_Name;
 
         //public String[] detail_Field_Value = new String[8];
-        ContactDetail contact = new ContactDetail();
+        ContactDetail person = new ContactDetail();
         List<ContactDetail> contact_List = new List<ContactDetail>();
 
         public Boolean CheckDuplicate(String first_Name,String last_Name)
@@ -133,6 +139,9 @@ namespace AddressBookProgram
 
         public void AddContact(String input_string)
             {
+            ValidationContext context = new ValidationContext(person, null, null);
+            List<ValidationResult> result = new List<ValidationResult>();
+            bool valid = Validator.TryValidateObject(person, context, result, true);
 
             String[] input_Field_Value = new String[8];
             input_Field_Value = input_string.Split(",");
@@ -144,7 +153,7 @@ namespace AddressBookProgram
             }
             else
             {
-                ContactDetail person = new ContactDetail();
+                
                 
                 person.first_Name = input_Field_Value[0];
                 person.last_Name = input_Field_Value[1];
@@ -188,35 +197,47 @@ namespace AddressBookProgram
         }
         public void WriteToAddressBook_UsingIO()
         {
-            string path = @"C:\Users\anujs\Desktop\AddressBook.txt";
-            FileStream file = new FileStream(path, FileMode.OpenOrCreate,
+            string path = @"C:\Users\anujs\source\repos\AddressBookProgram\AddressBookProgram\AddressBook.csv";
+            FileStream file = new FileStream(path, FileMode.Create,
             FileAccess.ReadWrite);
             using (StreamWriter sr = new StreamWriter(file))
+            using(var csv = new CsvWriter(sr, CultureInfo.InvariantCulture))
             {
+                
+                csv.WriteRecords(contact_List);
 
-                foreach (ContactDetail person in contact_List)
-                {
-                    string tabular_Output = String.Format("{0,-12}{1,-12}{2,-12}{3,-12}{4,-12}{5,-12}{6,-12}{7,-12}", person.first_Name, person.last_Name, person.address, person.city, person.state, person.pincode, person.phoneNum, person.email);
-                    sr.WriteLine(tabular_Output);
-
-                }
                 Console.WriteLine("\n Done Writing \n");
             }
         }
         public void ReadFromAddressBook_UsingIO()
         {
-            string path = @"C:\Users\anujs\Desktop\AddressBook.txt";
-            FileStream file = new FileStream(path, FileMode.OpenOrCreate,
-            FileAccess.ReadWrite);
-            using (StreamReader sr = new StreamReader(file))
+            string path = @"C:\Users\anujs\source\repos\AddressBookProgram\AddressBookProgram\AddressBook.csv";
+            //FileStream file = new FileStream(path, FileMode.Open,
+            //FileAccess.ReadWrite);
+            using (StreamReader sr = new StreamReader(path))
+            using (var csv = new CsvReader(sr, CultureInfo.InvariantCulture))
             {
                 if (sr.ReadLine() == null)
                     Console.WriteLine("\n AddressBook is Empty.");
 
-                String s = "";
-                while ((s = sr.ReadLine()) != null)
+                
+                else
                 {
-                    Console.WriteLine(s);
+                    csv.Configuration.HeaderValidated = null;
+                    var records = csv.GetRecords<ContactDetail>().ToList();
+
+                    foreach (ContactDetail person in records)
+                    {
+                        //Console.Write("\t" + person.ff);
+                        Console.Write("\t" + person.last_Name);
+                        Console.Write("\t" + person.address);
+                        Console.Write("\t" + person.city);
+                        Console.Write("\t" + person.state);
+                        Console.Write("\t" + person.pincode);
+                        Console.Write("\t" + person.phoneNum);
+                        Console.Write("\t" + person.email);
+                        Console.Write("\n");
+                    }
                 }
                 Console.WriteLine("\n Done Reading \n");
             }
