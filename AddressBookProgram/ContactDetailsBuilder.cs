@@ -217,13 +217,13 @@ namespace AddressBookProgram
             using (StreamReader sr = new StreamReader(path))
             using (var csv = new CsvReader(sr, CultureInfo.InvariantCulture))
             {
-                if (sr.ReadLine() == null)
-                    Console.WriteLine("\n AddressBook is Empty.");
+                //if (sr.ReadLine() == null)
+                //    Console.WriteLine("\n AddressBook is Empty.");
 
                 
-                else
+                
                 {
-                    csv.Configuration.HeaderValidated = null;
+                    //csv.Configuration.HeaderValidated = null;
                     var records = csv.GetRecords<ContactDetail>().ToList();
 
                     foreach (ContactDetail person in records)
