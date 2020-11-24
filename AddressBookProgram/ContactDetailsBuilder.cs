@@ -15,7 +15,11 @@ using System.Threading;
 
 namespace AddressBookProgram
 {
-    class ContactDetailsBuilder: IClassDetailsBuilder
+    /// <summary>
+    /// COntact Details Builder Main
+    /// </summary>
+    /// <seealso cref="AddressBookProgram.IClassDetailsBuilder" />
+    class ContactDetailsBuilder : IClassDetailsBuilder
     {
         
 
@@ -89,6 +93,12 @@ namespace AddressBookProgram
         ContactDetail person = new ContactDetail();
         List<ContactDetail> contact_List = new List<ContactDetail>();
 
+        /// <summary>
+        /// Checks the duplicate.
+        /// </summary>
+        /// <param name="first_Name">The first name.</param>
+        /// <param name="last_Name">The last name.</param>
+        /// <returns></returns>
         public Boolean CheckDuplicate(String first_Name,String last_Name)
         {
             //var find_Duplicate = contact_List.Contains();
@@ -101,6 +111,9 @@ namespace AddressBookProgram
             }
             return false;
         }
+        /// <summary>
+        /// Sorts the by state city zip.
+        /// </summary>
         public void sort_By_StateCityZip()
         {
             Console.WriteLine("Enter the field to be sorted : 1- City 2- State 3- Zip");
@@ -126,6 +139,9 @@ namespace AddressBookProgram
 
             }
         }
+        /// <summary>
+        /// Sorts the aphabetically.
+        /// </summary>
         public void sort_Aphabetically()
         {
             if (contact_List.Count == 0)
@@ -138,6 +154,10 @@ namespace AddressBookProgram
             }
         }
 
+        /// <summary>
+        /// Adds the contact.
+        /// </summary>
+        /// <param name="input_string">The input string.</param>
         public void AddContact(String input_string)
             {
             ValidationContext context = new ValidationContext(person, null, null);
@@ -177,6 +197,9 @@ namespace AddressBookProgram
 
             }
 
+        /// <summary>
+        /// Gets the person details.
+        /// </summary>
         public void getPersonDetails()
         {
             
@@ -196,6 +219,9 @@ namespace AddressBookProgram
 
             }
         }
+        /// <summary>
+        /// Writes to address book using io.
+        /// </summary>
         public void WriteToAddressBook_UsingIO()
         {
             string path = @"C:\Users\anujs\source\repos\AddressBookProgram\AddressBookProgram\AddressBookJson.json";
@@ -207,16 +233,23 @@ namespace AddressBookProgram
                 serializer.Serialize(writer, contact_List);
             }
         }
+        /// <summary>
+        /// Reads from address book using io.
+        /// </summary>
         public void ReadFromAddressBook_UsingIO()
         {
             string import_path = @"C:\Users\anujs\source\repos\AddressBookProgram\AddressBookProgram\AddressBookJson.json";
             //FileStream file = new FileStream(path, FileMode.Open,
             //FileAccess.ReadWrite);
-            IList<ContactDetail> person_Contacts = JsonConvert.DeserializeObject < IList < ContactDetail >> (File.ReadAllText(import_path));
+            IList<ContactDetail> person_Contacts = JsonConvert.DeserializeObject<IList<ContactDetail>>(File.ReadAllText(import_path));
             Console.WriteLine("Done Reading");
 
         }
 
+        /// <summary>
+        /// Deletes the contact.
+        /// </summary>
+        /// <param name="input_detail">The input detail.</param>
         public void DeleteContact(String input_detail)
         {
             int to_Be_Deleted = 4; ;
@@ -237,6 +270,10 @@ namespace AddressBookProgram
             Console.WriteLine("Contact Deleted");
 
         }
+        /// <summary>
+        /// Edits the contact details.
+        /// </summary>
+        /// <param name="input_detail">The input detail.</param>
         public void EditContactDetails(String input_detail)
         {
             Boolean contact_Found = false;

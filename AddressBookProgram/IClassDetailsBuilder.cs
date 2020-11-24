@@ -4,6 +4,9 @@ using System.Text;
 
 namespace AddressBookProgram
 {
+    /// <summary>
+    /// Interface for Contact Builder Class
+    /// </summary>
     interface IClassDetailsBuilder
     {
 
@@ -19,8 +22,6 @@ namespace AddressBookProgram
         public void sort_Aphabetically();
         public void DeleteContact(String input_detail);
         public void EditContactDetails(String input_detail);
-
-
 
 
     }

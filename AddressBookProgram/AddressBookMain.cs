@@ -3,20 +3,16 @@ using System.Collections.Generic;
 
 namespace AddressBookProgram
 {
+    /// <summary>
+    /// Main Address Book Program Structure
+    /// </summary>
     class AddressBookMain
     {
         static void Main(string[] args)
         {
             Dictionary<String,ContactDetailsBuilder> address_book_list = new Dictionary<string,ContactDetailsBuilder>();
-            Dictionary<String, int> field_map = new Dictionary<string, int>();
-            field_map.Add("first_Name", 0);
-            field_map.Add("last_Name", 1);
-            field_map.Add("address", 2);
-            field_map.Add("city", 3);
-            field_map.Add("state", 4);
-            field_map.Add("pincode", 5);
-            field_map.Add("phone_Number", 6);
-            field_map.Add("email_Id", 7);
+
+            List<string> field_List = new List<string>() { "first_Name", "first_Name", "address", "city", "state", "phone_Number", "email_Id" };
 
             String[] person_Details = new string[8];
             Console.WriteLine("Welcome to Address Book Program");
@@ -60,9 +56,9 @@ namespace AddressBookProgram
 
                             case 1:
                                 Console.WriteLine("Enter the Contact details of a person : \n");
-                                foreach (var i in field_map)
+                                foreach (var i in field_List)
                                 {
-                                    Console.WriteLine(i.Key + ":");
+                                    Console.WriteLine(i + ":");
                                     input_String = input_String + Console.ReadLine() + string_limiter;
 
                                 }
@@ -115,10 +111,6 @@ namespace AddressBookProgram
                         {
                             exit_Prgram = true;
                         }
-
-
-
-
 
                     }
 
