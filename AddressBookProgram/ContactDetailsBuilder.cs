@@ -239,8 +239,6 @@ namespace AddressBookProgram
         public void ReadFromAddressBook_UsingIO()
         {
             string import_path = @"C:\Users\anujs\source\repos\AddressBookProgram\AddressBookProgram\AddressBookJson.json";
-            //FileStream file = new FileStream(path, FileMode.Open,
-            //FileAccess.ReadWrite);
             IList<ContactDetail> person_Contacts = JsonConvert.DeserializeObject<IList<ContactDetail>>(File.ReadAllText(import_path));
             Console.WriteLine("Done Reading");
 
