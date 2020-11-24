@@ -14,7 +14,11 @@ using System.Threading;
 
 namespace AddressBookProgram
 {
-    class ContactDetailsBuilder: IClassDetailsBuilder
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="AddressBookProgram.IClassDetailsBuilder" />
+    class ContactDetailsBuilder : IClassDetailsBuilder
     {
         
 
@@ -22,6 +26,9 @@ namespace AddressBookProgram
         Dictionary<String, String> PersonDetailsByState = new Dictionary<string, string>();
         string Field_Title = String.Format("{0,-12}{1,-12}{2,-12}{3,-12}{4,-12}{5,-12}{6,-12}{7,-12}\n", "First Name", "Last Name", "Address", "City", "State", "PinCode", "phn Num", "Email");
 
+        /// <summary>
+        /// Gets the state of the person details by city or.
+        /// </summary>
         public void get_PersonDetails_By_City_or_State()
         {
             int count_ByState = 0;
@@ -63,19 +70,7 @@ namespace AddressBookProgram
                 Console.WriteLine("Total number of persons living in " + input_Detail + " are:" + count_ByState);
             }
         }
-        public ContactDetailsBuilder()
-        {
-            
-            Dictionary<int,String> field_map = new Dictionary<int, String>();
-            field_map.Add( 0, "first_Name");
-            field_map.Add(1, "last_Name");
-            field_map.Add(2,"address");
-            field_map.Add(3, "city");
-            field_map.Add(4, "state");
-            field_map.Add( 5, "pincode");
-            field_map.Add( 6, "phone_Number");
-            field_map.Add( 7, "email_Id");
-        }
+        
         public void set_AddressBook_Name(String unique_Name)
         {
             this.unique_Name = unique_Name;
@@ -88,6 +83,12 @@ namespace AddressBookProgram
         ContactDetail person = new ContactDetail();
         List<ContactDetail> contact_List = new List<ContactDetail>();
 
+        /// <summary>
+        /// Checks the duplicate.
+        /// </summary>
+        /// <param name="first_Name">The first name.</param>
+        /// <param name="last_Name">The last name.</param>
+        /// <returns></returns>
         public Boolean CheckDuplicate(String first_Name,String last_Name)
         {
             //var find_Duplicate = contact_List.Contains();
@@ -100,6 +101,9 @@ namespace AddressBookProgram
             }
             return false;
         }
+        /// <summary>
+        /// Sorts the by state city zip.
+        /// </summary>
         public void sort_By_StateCityZip()
         {
             Console.WriteLine("Enter the field to be sorted : 1- City 2- State 3- Zip");
@@ -125,6 +129,9 @@ namespace AddressBookProgram
 
             }
         }
+        /// <summary>
+        /// Sorts the aphabetically.
+        /// </summary>
         public void sort_Aphabetically()
         {
             if (contact_List.Count == 0)
@@ -137,6 +144,10 @@ namespace AddressBookProgram
             }
         }
 
+        /// <summary>
+        /// Adds the contact.
+        /// </summary>
+        /// <param name="input_string">The input string.</param>
         public void AddContact(String input_string)
             {
             ValidationContext context = new ValidationContext(person, null, null);
@@ -176,6 +187,9 @@ namespace AddressBookProgram
 
             }
 
+        /// <summary>
+        /// Gets the person details.
+        /// </summary>
         public void getPersonDetails()
         {
             
@@ -195,6 +209,9 @@ namespace AddressBookProgram
 
             }
         }
+        /// <summary>
+        /// Writes to address book using io.
+        /// </summary>
         public void WriteToAddressBook_UsingIO()
         {
             string path = @"C:\Users\anujs\source\repos\AddressBookProgram\AddressBookProgram\AddressBook.csv";
@@ -209,19 +226,17 @@ namespace AddressBookProgram
                 Console.WriteLine("\n Done Writing \n");
             }
         }
+        /// <summary>
+        /// Reads from address book using io.
+        /// </summary>
         public void ReadFromAddressBook_UsingIO()
         {
             string path = @"C:\Users\anujs\source\repos\AddressBookProgram\AddressBookProgram\AddressBook.csv";
-            //FileStream file = new FileStream(path, FileMode.Open,
-            //FileAccess.ReadWrite);
+            
             using (StreamReader sr = new StreamReader(path))
             using (var csv = new CsvReader(sr, CultureInfo.InvariantCulture))
             {
-                //if (sr.ReadLine() == null)
-                //    Console.WriteLine("\n AddressBook is Empty.");
-
-                
-                
+               
                 {
                     //csv.Configuration.HeaderValidated = null;
                     var records = csv.GetRecords<ContactDetail>().ToList();
@@ -243,6 +258,10 @@ namespace AddressBookProgram
             }
         }
 
+        /// <summary>
+        /// Deletes the contact.
+        /// </summary>
+        /// <param name="input_detail">The input detail.</param>
         public void DeleteContact(String input_detail)
         {
             int to_Be_Deleted = 4; ;
@@ -263,6 +282,10 @@ namespace AddressBookProgram
             Console.WriteLine("Contact Deleted");
 
         }
+        /// <summary>
+        /// Edits the contact details.
+        /// </summary>
+        /// <param name="input_detail">The input detail.</param>
         public void EditContactDetails(String input_detail)
         {
             Boolean contact_Found = false;

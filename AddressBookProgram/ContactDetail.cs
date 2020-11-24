@@ -5,6 +5,9 @@ using System.Text;
 
 namespace AddressBookProgram
 {
+    /// <summary>
+    /// Validation Input
+    /// </summary>
     public class ContactDetail
     {
         [Required(ErrorMessage = "First Name is required")]
