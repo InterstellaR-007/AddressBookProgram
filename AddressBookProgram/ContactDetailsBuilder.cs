@@ -222,7 +222,7 @@ namespace AddressBookProgram
         /// <summary>
         /// Writes to address book using io.
         /// </summary>
-        public void WriteToAddressBook_UsingIO()
+        public void WriteToAddressBook_UsingJSON()
         {
             string path = @"C:\Users\anujs\source\repos\AddressBookProgram\AddressBookProgram\AddressBookJson.json";
 
@@ -236,7 +236,7 @@ namespace AddressBookProgram
         /// <summary>
         /// Reads from address book using io.
         /// </summary>
-        public void ReadFromAddressBook_UsingIO()
+        public void ReadFromAddressBook_UsingJSON()
         {
             string import_path = @"C:\Users\anujs\source\repos\AddressBookProgram\AddressBookProgram\AddressBookJson.json";
             IList<ContactDetail> person_Contacts = JsonConvert.DeserializeObject<IList<ContactDetail>>(File.ReadAllText(import_path));
