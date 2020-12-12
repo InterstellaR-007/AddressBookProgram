@@ -5,8 +5,12 @@ using System.Text.RegularExpressions;
 namespace AddressBookProgram
 {
 
+    /// <summary>
+    /// Validation class for checking contact input fields
+    /// </summary>
     public class InputValidation
     {
+        // Dictionary storing the Regex string (Value) for each contact field (key) 
         public Dictionary<string, string> regex_Dictionary = new Dictionary<string, string>
         {
             {"First Name",@"^[a-zA-Z]{3,}" },
@@ -18,7 +22,16 @@ namespace AddressBookProgram
             {"Phone Number",@"^[+]*[0-9]{2}\s{0,1}[0-9]{10}" },
             {"Email Id",@"^[^\.][a-zA-Z_\-0-9]*[\.]*[a-zA-Z_\-0-9]+@[a-z0-9]+[\.][a-z]{2,4}([\.][a-z]{2,3})?$" }
         };
-        
+
+
+        /// <summary>
+        /// Determines whether entered input is valid acc to Regex constraint
+        /// </summary>
+        /// <param name="field_Name">Name of the field.</param>
+        /// <param name="input_Value">The input value.</param>
+        /// <returns>
+        ///   <c>true</c> if input field matches the regex ; otherwise, <c>false</c>.
+        /// </returns>
         public bool isInputValid(string field_Name,string input_Value)
         {
             string regex_String;
@@ -30,42 +43,53 @@ namespace AddressBookProgram
         }
     }
     /// <summary>
-    /// Main Address Book Program Structure
+    /// Main Address Book Program UI
     /// </summary>
     class AddressBookMain
     {
         static void Main(string[] args)
         {
+            //Dictionary to store each AddressBook object with unique Name key
             Dictionary<String,ContactDetailsBuilder> address_book_list = new Dictionary<string,ContactDetailsBuilder>();
 
+            //List of Contact fields 
             List<string> field_List = new List<string>() { "First Name", "Last Name", "Address", "City", "State","Pin Code", "Phone Number", "Email Id" };
 
-            String[] person_Details = new string[8];
+
             Console.WriteLine("Welcome to Address Book Program");
+
             Boolean exit_Prgram = false;
             Boolean exit_MainProgram = false;
-            int input_Option = 0;
+            
             
             String string_limiter = ",";
-            String input_String = "";
-
+            
+            //loop for each AddressBook initialisation
             while (exit_MainProgram != true)
             {
+                // User prompt
                 Console.WriteLine(" \nEnter a new Address book? (y/n) ");
                 
                 if (Console.ReadLine() == "y")
                 {
+                    //Create a new Address Book object
                     ContactDetailsBuilder new_AddressBook = new ContactDetailsBuilder();
                     Console.WriteLine("\nEnter the Address Book name: ");
                     String unique_Name = Console.ReadLine();
                     string field_Input;
+
+                    //set the Address Book name
                     new_AddressBook.set_AddressBook_Name(unique_Name);
                     
+                    //Adding current Address book to global List
                     address_book_list.Add(unique_Name, new_AddressBook);
 
+                    //Loop for Contact based operation for each Address Book
                     while (exit_Prgram != true)
                     {
+                        // UI for Operations List
 
+                        int input_Option; 
                         Console.WriteLine("\nSelect the option from below to execute: \n");
                         Console.WriteLine("1: Add a Contact ");
                         Console.WriteLine("2: Edit an existing Contact ");
@@ -84,10 +108,12 @@ namespace AddressBookProgram
                         switch (input_Option)
                         {
 
-                            case 1:
+                            case 1: //Add Contact
                                 Console.WriteLine("Enter the Contact details of a person : \n");
+
+                                //Making instance of inputValidation Class
                                 InputValidation inputValidation = new InputValidation();
-                                input_String = "";
+                                string input_String = "";
                                 foreach (var i in field_List)
                                 {
 
@@ -98,6 +124,7 @@ namespace AddressBookProgram
 
                                         field_Input = Console.ReadLine();
                                         
+                                        //if Input doesnt match the regex pattern
                                         if(inputValidation.isInputValid(i, field_Input) == false)
                                         {
                                             Console.WriteLine("input detail is Invalid, Try Again");
@@ -108,70 +135,69 @@ namespace AddressBookProgram
                                         }
                                     }
                                         
-                                    
+                                    //appending each input field value to single string 
                                     input_String = input_String + field_Input + string_limiter;
 
                                 }
 
+                                //Pasing appended string to AddContact Method
                                 new_AddressBook.AddContact(input_String);
                                 
                                 break;
 
-                            case 2:
+                            case 2: // Editing Contact
                                 Console.WriteLine("\n Enter the first name and last name <firstName>,<lastName> of that contact you want to edit: \n");
                                 input_String = Console.ReadLine();
                                 new_AddressBook.EditContactDetails(input_String);
                                 break;
 
-                            case 3:
+                            case 3: // Deleting Contact
                                 Console.WriteLine("\n Enter the first name and last name <firstName>,<lastName> of contact you want to delete: \n");
                                 input_String = Console.ReadLine();
                                 new_AddressBook.DeleteContact(input_String);
                                 break;
 
-                            case 4:
+                            case 4: // Print Contacts
                                 new_AddressBook.getPersonDetails();
                                 break;
 
-                            case 5:
+                            case 5: // Print Contacts from particular city/state
                                 new_AddressBook.get_PersonDetails_By_City_or_State();
                                 break;
 
-                            case 6:
+                            case 6: // Sort the list wrt first name in alphabetical order
                                 new_AddressBook.sort_Aphabetically();
                                 break;
 
-                            case 7:
+                            case 7: // Sort the list wrt State/City/Zip
                                 new_AddressBook.sort_By_StateCityZip();
                                 break;
-                            case 8:
+
+                            case 8: // Write Contacts to JSON File
                                 new_AddressBook.WriteToAddressBook_UsingJSON();
                                 break;
-                            case 9:
+
+                            case 9: // Read Contacts from JSON File
                                 new_AddressBook.ReadFromAddressBook_UsingJSON();
                                 break;
-                            case 10:
+
+                            case 10: // Read Contacts from CSV File
                                 new_AddressBook.ReadFromAddressBook_UsingCSV();
                                 break;
-                            case 11:
+
+                            case 11: // Write Contacts to CSV File
                                 new_AddressBook.WriteToAddressBook_UsingCSV();
                                 break;
-                            case 12:
+
+                            case 12: // Exit current Operations loop
                                 exit_Prgram = true;
                                 break;
 
-                            default:
+                            default: // for invalid switch input
                                 Console.WriteLine("Invalid Input");
                                 break;
                         }
 
-                        //Console.WriteLine("Do you want to continue ? y/n : \n ");
-                        //string input_Read = Console.ReadLine();
-                        //if (Console.ReadLine() == "n")
-                        //{
-                        //    exit_Prgram = true;
-                        //}
-                        //else if()
 
                     }
 
@@ -180,8 +206,10 @@ namespace AddressBookProgram
                 }
                 else 
                 {
+                    // Checking if any address book exists
                     if (address_book_list.Count > 0)
                     {
+                        // Printing all address book with its current saved contacts
                         foreach (var i in address_book_list)
                         {
                             Console.WriteLine("Address Book name is : \n " + i.Key);
@@ -189,6 +217,7 @@ namespace AddressBookProgram
                         }
                         
                     }
+                    //flags exit program ture
                     exit_MainProgram = true;
                 }
                 
