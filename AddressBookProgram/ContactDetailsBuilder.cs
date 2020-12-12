@@ -36,22 +36,22 @@ namespace AddressBookProgram
             string input_Detail = Console.ReadLine();
             Boolean city_Detail_Found = false;
             Boolean state_Detail_Found = false;
-            foreach (var person in PersonDetailsByCity)
+            foreach (var person in contact_List)
             {
-                if (person.Value.Equals(input_Detail))
+                if (person.city.Equals(input_Detail))
                 {
-                    Console.WriteLine("Searched Name is: " + person.Key);
+                    Console.WriteLine("Searched Name is: " + person.first_Name+" "+person.last_Name);
                     count_ByCity++;
                     city_Detail_Found = true;
                 }
                 
             }
             
-            foreach (var person in PersonDetailsByState)
+            foreach (var person in contact_List)
             {
-                if (person.Value.Equals(input_Detail))
+                if (person.state.Equals(input_Detail))
                 {
-                    Console.WriteLine("Searched Name is: " + person.Key);
+                    Console.WriteLine("Searched Name is: " + person.first_Name + " " + person.last_Name);
                     count_ByState++;
                     state_Detail_Found = true;
                 }
@@ -258,7 +258,7 @@ namespace AddressBookProgram
         /// <param name="input_detail">The input detail.</param>
         public void DeleteContact(String input_detail)
         {
-            int to_Be_Deleted = 4; ;
+            int to_Be_Deleted = -1; ;
             int count=-1 ;
             foreach (ContactDetail person in contact_List)
             {
@@ -271,9 +271,14 @@ namespace AddressBookProgram
                 }
 
             }
+            if (to_Be_Deleted != -1)
+            {
+                contact_List.RemoveAt(to_Be_Deleted);
+                Console.WriteLine("Contact Deleted !\n ");
+            }
+            else
+                Console.WriteLine("Contact Not Found !");
             
-            contact_List.RemoveAt(to_Be_Deleted);
-            Console.WriteLine("Contact Deleted !\n ");
 
         }
         /// <summary>
