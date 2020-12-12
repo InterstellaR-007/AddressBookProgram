@@ -76,7 +76,9 @@ namespace AddressBookProgram
                         Console.WriteLine("7: Sort by City/State/PinCode ");
                         Console.WriteLine("8: Write to Address Book JSON file");
                         Console.WriteLine("9: Read from Address Book JSON file");
-                        Console.WriteLine("10: Exit Program\n");
+                        Console.WriteLine("10: Read from Address Book CSV file");
+                        Console.WriteLine("11: Write to Address Book CSV file");
+                        Console.WriteLine("12: Exit Program\n");
 
                         input_Option = int.Parse(Console.ReadLine());
                         switch (input_Option)
@@ -85,6 +87,7 @@ namespace AddressBookProgram
                             case 1:
                                 Console.WriteLine("Enter the Contact details of a person : \n");
                                 InputValidation inputValidation = new InputValidation();
+                                input_String = "";
                                 foreach (var i in field_List)
                                 {
 
@@ -92,6 +95,7 @@ namespace AddressBookProgram
 
                                     while (true)
                                     {
+
                                         field_Input = Console.ReadLine();
                                         
                                         if(inputValidation.isInputValid(i, field_Input) == false)
@@ -110,7 +114,7 @@ namespace AddressBookProgram
                                 }
 
                                 new_AddressBook.AddContact(input_String);
-                                input_String = "";
+                                
                                 break;
 
                             case 2:
@@ -147,6 +151,12 @@ namespace AddressBookProgram
                                 new_AddressBook.ReadFromAddressBook_UsingJSON();
                                 break;
                             case 10:
+                                new_AddressBook.ReadFromAddressBook_UsingCSV();
+                                break;
+                            case 11:
+                                new_AddressBook.WriteToAddressBook_UsingCSV();
+                                break;
+                            case 12:
                                 exit_Prgram = true;
                                 break;
 

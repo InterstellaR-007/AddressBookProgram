@@ -16,6 +16,9 @@ namespace AddressBookProgram
         public void get_PersonDetails_By_City_or_State();
 
         public void sort_By_StateCityZip();
+
+        public void WriteToAddressBook_UsingCSV();
+        public void ReadFromAddressBook_UsingCSV();
         public void WriteToAddressBook_UsingJSON();
         public void ReadFromAddressBook_UsingJSON();
 

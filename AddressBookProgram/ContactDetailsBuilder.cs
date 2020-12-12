@@ -15,18 +15,24 @@ using System.Threading;
 
 namespace AddressBookProgram
 {
+
+
+
     /// <summary>
-    /// COntact Details Builder Main
+    /// Contact Details Builder Main
     /// </summary>
     /// <seealso cref="AddressBookProgram.IClassDetailsBuilder" />
     class ContactDetailsBuilder : IClassDetailsBuilder
     {
-        
 
-        Dictionary<String, String> PersonDetailsByCity = new Dictionary<string, string>();
-        Dictionary<String, String> PersonDetailsByState = new Dictionary<string, string>();
+        //Tabular formating for Contact Fields with fixed spacing
         string Field_Title = String.Format("{0,-15}{1,-15}{2,-15}{3,-15}{4,-15}{5,-15}{6,-15}{7,-15}\n", "First Name", "Last Name", "Address", "City", "State", "PinCode", "phn Num", "Email");
 
+
+
+        /// <summary>
+        /// Gets the name of the person by city or state.
+        /// </summary>
         public void get_PersonDetails_By_City_or_State()
         {
             int count_ByState = 0;
@@ -36,6 +42,8 @@ namespace AddressBookProgram
             string input_Detail = Console.ReadLine();
             Boolean city_Detail_Found = false;
             Boolean state_Detail_Found = false;
+
+            //Searching for person using city field
             foreach (var person in contact_List)
             {
                 if (person.city.Equals(input_Detail))
@@ -46,7 +54,8 @@ namespace AddressBookProgram
                 }
                 
             }
-            
+
+            //Searching for person using State field
             foreach (var person in contact_List)
             {
                 if (person.state.Equals(input_Detail))
@@ -57,6 +66,7 @@ namespace AddressBookProgram
                 }
 
             }
+            //Checking for no search result
             if (!city_Detail_Found && !state_Detail_Found)
                 Console.WriteLine("No details Found");
             else if(city_Detail_Found)
@@ -68,9 +78,15 @@ namespace AddressBookProgram
                 Console.WriteLine("Total number of persons living in " + input_Detail + " are:" + count_ByState);
             }
         }
+
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContactDetailsBuilder"/> class.
+        /// </summary>
         public ContactDetailsBuilder()
         {
-            
+            //initialise dictionary with required field's key value pairs
             Dictionary<int,String> field_map = new Dictionary<int, String>();
             field_map.Add(0, "first_Name");
             field_map.Add(1, "last_Name");
@@ -81,16 +97,23 @@ namespace AddressBookProgram
             field_map.Add(6, "phone_Number");
             field_map.Add(7, "email_Id");
         }
+
+
+        ///AddressBook unique name variable
+        private String unique_Name;
+
+        /// <summary>
+        /// Sets the name of the address book.
+        /// </summary>
+        /// <param name="unique_Name">Name of the unique.</param>
         public void set_AddressBook_Name(String unique_Name)
         {
             this.unique_Name = unique_Name;
         }
-       
 
-        private String unique_Name;
-
-        //public String[] detail_Field_Value = new String[8];
-        
+        /// <summary>
+        /// The contact list for maintianing all contacts during execution
+        /// </summary>
         List<ContactDetail> contact_List = new List<ContactDetail>();
 
         /// <summary>
@@ -101,8 +124,6 @@ namespace AddressBookProgram
         /// <returns></returns>
         public Boolean CheckDuplicate(String first_Name,String last_Name)
         {
-            //var find_Duplicate = contact_List.Contains();
-
             foreach (ContactDetail person in contact_List)
             {
                 if (person.first_Name.Equals(first_Name) && person.last_Name.Equals(last_Name))
@@ -111,27 +132,34 @@ namespace AddressBookProgram
             }
             return false;
         }
+
+
+
         /// <summary>
         /// Sorts the by state city zip.
         /// </summary>
         public void sort_By_StateCityZip()
         {
+            //prompt for user to choose sorting parameter
             Console.WriteLine("Enter the field to be sorted : 1- City 2- State 3- Zip");
             int input_field = int.Parse(Console.ReadLine());
 
             switch (input_field)
             {
                 case 1:
+                    //Sorting using city field
                     contact_List.Sort((x, y) => x.city.CompareTo(y.city));
                     Console.WriteLine("Sorting is Done using City");
                     getPersonDetails();
                     break;
                 case 2:
+                    //Sorting using state field
                     contact_List.Sort((x, y) => x.state.CompareTo(y.state));
                     Console.WriteLine("Sorting is Done using State");
                     getPersonDetails();
                     break;
                 case 3:
+                    //Sorting using zipcode field
                     contact_List.Sort((x, y) => x.pincode.CompareTo(y.pincode));
                     Console.WriteLine("Sorting is Done using Zip Code");
                     getPersonDetails();
@@ -139,6 +167,9 @@ namespace AddressBookProgram
 
             }
         }
+
+
+
         /// <summary>
         /// Sorts the aphabetically.
         /// </summary>
@@ -154,25 +185,27 @@ namespace AddressBookProgram
             }
         }
 
+
+
         /// <summary>
         /// Adds the contact.
         /// </summary>
         /// <param name="input_string">The input string.</param>
         public void AddContact(String input_string)
             {
-            
 
+            //Spliting input string with respective fields
             String[] input_Field_Value = new String[8];
             input_Field_Value = input_string.Split(",");
             
-
+            //Check Duplicate withing existing records
             if (CheckDuplicate(input_Field_Value[0],input_Field_Value[1]))
             {
                 Console.WriteLine("Person already exists in Record");
             }
             else
             {
-
+                //Adding new Contact object to List
                 ContactDetail person = new ContactDetail();
 
                 person.first_Name = input_Field_Value[0];
@@ -184,10 +217,6 @@ namespace AddressBookProgram
                 person.phoneNum = input_Field_Value[6];
                 person.email = input_Field_Value[7];
 
-                PersonDetailsByCity.Add(person.first_Name + " " + person.last_Name, person.city); ;
-
-                PersonDetailsByState.Add(person.first_Name + " " + person.last_Name, person.state);
-
                 contact_List.Add(person);
                 Console.WriteLine("Contact Added");
             }
@@ -195,6 +224,8 @@ namespace AddressBookProgram
             
 
             }
+
+
 
         /// <summary>
         /// Gets the person details.
@@ -206,11 +237,13 @@ namespace AddressBookProgram
                 Console.WriteLine("No records exist");
             else
             {
+                //Displays total count
                 Console.WriteLine("No of Contacts in Database: " + contact_List.Count);
                 Console.WriteLine(Field_Title);
+
                 foreach (ContactDetail person in contact_List)
                 {
-
+                    //Prints Contact Details in Tabular format with fixed spacing
                     string tabular_Output = String.Format("{0,-15}{1,-15}{2,-15}{3,-15}{4,-15}{5,-15}{6,-15}{7,-15}", person.first_Name, person.last_Name, person.address, person.city, person.state, person.pincode, person.phoneNum, person.email);
                     Console.WriteLine(tabular_Output);
 
@@ -218,8 +251,59 @@ namespace AddressBookProgram
 
             }
         }
+
+
+
         /// <summary>
-        /// Writes to address book using io.
+        /// Writes to address book using CSV Helper Library.
+        /// </summary>
+        public void WriteToAddressBook_UsingCSV()
+        {
+
+            string path = @"C:\Users\Ajay Sharma\source\repos\AddressBookProgram\AddressBookProgram\AddressBook.csv";
+            FileStream file = new FileStream(path, FileMode.Create,FileAccess.ReadWrite);
+
+            using (StreamWriter sr = new StreamWriter(file))
+            {
+                using (var csv = new CsvWriter(sr, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteRecords(contact_List);
+                    Console.WriteLine("\n Done Writing \n");
+                }
+            }
+        }
+
+
+
+        /// <summary>
+        /// Reads from address book using CSV Helper Library.
+        /// </summary>
+        public void ReadFromAddressBook_UsingCSV()
+        {
+            string path = @"C:\Users\Ajay Sharma\source\repos\AddressBookProgram\AddressBookProgram\AddressBook.csv";
+
+            using (StreamReader sr = new StreamReader(path))
+            {
+                using (var csv = new CsvReader(sr, CultureInfo.InvariantCulture))
+                {
+
+                    {
+                        //csv.Configuration.HeaderValidated = null;
+
+                        //Converting retrived IEnumerable Object to List and overriting it to contact_List
+                        var records = csv.GetRecords<ContactDetail>().ToList();
+                        contact_List = records;
+                        
+                    }
+                    Console.WriteLine("\n Done Reading \n");
+                }
+            }
+        }
+
+
+
+        /// <summary>
+        /// Writes to address book using NewtonSoft Json Library.
         /// </summary>
         public void WriteToAddressBook_UsingJSON()
         {
@@ -237,8 +321,10 @@ namespace AddressBookProgram
             }
         }
 
+
+
         /// <summary>
-        /// Reads from address book using io.
+        /// Reads from address book using NewtonSoft Json Library.
         /// </summary>
         public void ReadFromAddressBook_UsingJSON()
         {
@@ -251,6 +337,8 @@ namespace AddressBookProgram
 
 
         }
+
+
 
         /// <summary>
         /// Deletes the contact.
@@ -281,6 +369,9 @@ namespace AddressBookProgram
             
 
         }
+
+
+
         /// <summary>
         /// Edits the contact details.
         /// </summary>
