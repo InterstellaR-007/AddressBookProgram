@@ -25,7 +25,7 @@ namespace AddressBookProgram
 
         Dictionary<String, String> PersonDetailsByCity = new Dictionary<string, string>();
         Dictionary<String, String> PersonDetailsByState = new Dictionary<string, string>();
-        string Field_Title = String.Format("{0,-12}{1,-12}{2,-12}{3,-12}{4,-12}{5,-12}{6,-12}{7,-12}\n", "First Name", "Last Name", "Address", "City", "State", "PinCode", "phn Num", "Email");
+        string Field_Title = String.Format("{0,-15}{1,-15}{2,-15}{3,-15}{4,-15}{5,-15}{6,-15}{7,-15}\n", "First Name", "Last Name", "Address", "City", "State", "PinCode", "phn Num", "Email");
 
         public void get_PersonDetails_By_City_or_State()
         {
@@ -72,14 +72,14 @@ namespace AddressBookProgram
         {
             
             Dictionary<int,String> field_map = new Dictionary<int, String>();
-            field_map.Add( 0, "first_Name");
+            field_map.Add(0, "first_Name");
             field_map.Add(1, "last_Name");
             field_map.Add(2,"address");
             field_map.Add(3, "city");
             field_map.Add(4, "state");
-            field_map.Add( 5, "pincode");
-            field_map.Add( 6, "phone_Number");
-            field_map.Add( 7, "email_Id");
+            field_map.Add(5, "pincode");
+            field_map.Add(6, "phone_Number");
+            field_map.Add(7, "email_Id");
         }
         public void set_AddressBook_Name(String unique_Name)
         {
@@ -90,7 +90,7 @@ namespace AddressBookProgram
         private String unique_Name;
 
         //public String[] detail_Field_Value = new String[8];
-        ContactDetail person = new ContactDetail();
+        
         List<ContactDetail> contact_List = new List<ContactDetail>();
 
         /// <summary>
@@ -160,9 +160,7 @@ namespace AddressBookProgram
         /// <param name="input_string">The input string.</param>
         public void AddContact(String input_string)
             {
-            ValidationContext context = new ValidationContext(person, null, null);
-            List<ValidationResult> result = new List<ValidationResult>();
-            bool valid = Validator.TryValidateObject(person, context, result, true);
+            
 
             String[] input_Field_Value = new String[8];
             input_Field_Value = input_string.Split(",");
@@ -174,8 +172,9 @@ namespace AddressBookProgram
             }
             else
             {
-                
-                
+
+                ContactDetail person = new ContactDetail();
+
                 person.first_Name = input_Field_Value[0];
                 person.last_Name = input_Field_Value[1];
                 person.address= input_Field_Value[2];
@@ -212,7 +211,7 @@ namespace AddressBookProgram
                 foreach (ContactDetail person in contact_List)
                 {
 
-                    string tabular_Output = String.Format("{0,-12}{1,-12}{2,-12}{3,-12}{4,-12}{5,-12}{6,-12}{7,-12}", person.first_Name, person.last_Name, person.address, person.city, person.state, person.pincode, person.phoneNum, person.email);
+                    string tabular_Output = String.Format("{0,-15}{1,-15}{2,-15}{3,-15}{4,-15}{5,-15}{6,-15}{7,-15}", person.first_Name, person.last_Name, person.address, person.city, person.state, person.pincode, person.phoneNum, person.email);
                     Console.WriteLine(tabular_Output);
 
                 }
@@ -224,23 +223,32 @@ namespace AddressBookProgram
         /// </summary>
         public void WriteToAddressBook_UsingJSON()
         {
-            string path = @"C:\Users\anujs\source\repos\AddressBookProgram\AddressBookProgram\AddressBookJson.json";
+        
+            string path = @"C:\Users\Ajay Sharma\source\repos\AddressBookProgram\AddressBookProgram\AddressBookJson.json";
 
             JsonSerializer serializer = new JsonSerializer();
-            using(StreamWriter sw = new StreamWriter(path))
-            using(JsonWriter writer = new JsonTextWriter(sw))
+            using (StreamWriter sw = new StreamWriter(path))
             {
-                serializer.Serialize(writer, contact_List);
+                using (JsonWriter writer = new JsonTextWriter(sw))
+                {
+                    serializer.Serialize(writer, contact_List);
+                    Console.WriteLine("Done Writing to JSON file ! \n");
+                }
             }
         }
+
         /// <summary>
         /// Reads from address book using io.
         /// </summary>
         public void ReadFromAddressBook_UsingJSON()
         {
-            string import_path = @"C:\Users\anujs\source\repos\AddressBookProgram\AddressBookProgram\AddressBookJson.json";
+            string import_path = @"C:\Users\Ajay Sharma\source\repos\AddressBookProgram\AddressBookProgram\AddressBookJson.json";
             IList<ContactDetail> person_Contacts = JsonConvert.DeserializeObject<IList<ContactDetail>>(File.ReadAllText(import_path));
-            Console.WriteLine("Done Reading");
+
+            contact_List = (List<ContactDetail>)person_Contacts;
+
+            Console.WriteLine("Done Reading from JSON File ! \n");
+
 
         }
 
@@ -265,7 +273,7 @@ namespace AddressBookProgram
             }
             
             contact_List.RemoveAt(to_Be_Deleted);
-            Console.WriteLine("Contact Deleted");
+            Console.WriteLine("Contact Deleted !\n ");
 
         }
         /// <summary>
@@ -280,8 +288,8 @@ namespace AddressBookProgram
                 if (input_detail.CompareTo(person.first_Name + "," + person.last_Name) == 0)
                 {
                     contact_Found = true;
-                    Console.WriteLine("\n"+"Which detail field you want to edit of this person: ");
-                    Console.WriteLine("0:fn 1:ln 2:add 3:city 4:state 5:pincode 6:phn 7:emailId" +"\n");
+                    Console.WriteLine("\nWhich detail field you want to edit of this person: ");
+                    Console.WriteLine("0:fn 1:ln 2:add 3:city 4:state 5:pincode 6:phn 7:emailId\n");
 
                     int field = int.Parse(Console.ReadLine());
 
@@ -290,45 +298,47 @@ namespace AddressBookProgram
                     {
                         case 0:
                             person.first_Name = Console.ReadLine();
-                            Console.WriteLine("Field Updated");
+                            
                             break;
                         case 1:
                             person.last_Name = Console.ReadLine();
-                            Console.WriteLine("Field Updated");
+                            
                             break;
                         case 2:
                             person.address = Console.ReadLine();
-                            Console.WriteLine("Field Updated");
+                            
                             break;
                         case 3:
                             person.city = Console.ReadLine();
-                            Console.WriteLine("Field Updated");
+                            
                             break;
                         case 4:
                             person.state = Console.ReadLine();
-                            Console.WriteLine("Field Updated");
+                           
                             break;
                         case 5:
                             person.pincode = Console.ReadLine();
-                            Console.WriteLine("Field Updated");
+                            
                             break;
                         case 6:
                             person.phoneNum = Console.ReadLine();
-                            Console.WriteLine("Field Updated");
+                            
                             break;
                         case 7:
                             person.email = Console.ReadLine();
-                            Console.WriteLine("Field Updated");
+                            
                             break;
                     }
 
-                     
+                    Console.WriteLine("Field Updated ! \n ");
+
+
 
                 }
      
             }
             if(contact_Found==false)
-                Console.WriteLine("Contact not found");
+                Console.WriteLine("Contact not found \n");
 
 
         }

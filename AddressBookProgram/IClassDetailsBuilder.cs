@@ -16,8 +16,8 @@ namespace AddressBookProgram
         public void get_PersonDetails_By_City_or_State();
 
         public void sort_By_StateCityZip();
-        public void WriteToAddressBook_UsingIO();
-        public void ReadFromAddressBook_UsingIO();
+        public void WriteToAddressBook_UsingJSON();
+        public void ReadFromAddressBook_UsingJSON();
 
         public void sort_Aphabetically();
         public void DeleteContact(String input_detail);
