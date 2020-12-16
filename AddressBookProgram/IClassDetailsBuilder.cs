@@ -7,7 +7,7 @@ namespace AddressBookProgram
     /// <summary>
     /// Interface for Contact Builder Class
     /// </summary>
-    interface IClassDetailsBuilder
+    public interface IClassDetailsBuilder
     {
 
         public void set_AddressBook_Name(String unique_Name);

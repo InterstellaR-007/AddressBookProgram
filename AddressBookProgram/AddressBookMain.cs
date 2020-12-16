@@ -50,7 +50,7 @@ namespace AddressBookProgram
         static void Main(string[] args)
         {
             //Dictionary to store each AddressBook object with unique Name key
-            Dictionary<String,ContactDetailsBuilder> address_book_list = new Dictionary<string,ContactDetailsBuilder>();
+            Dictionary<String,ContactDetails_BL> address_book_list = new Dictionary<string,ContactDetails_BL>();
 
             //List of Contact fields 
             List<string> field_List = new List<string>() { "First Name", "Last Name", "Address", "City", "State","Pin Code", "Phone Number", "Email Id" };
@@ -72,17 +72,19 @@ namespace AddressBookProgram
                 
                 if (Console.ReadLine() == "y")
                 {
-                    //Create a new Address Book object
-                    ContactDetailsBuilder new_AddressBook = new ContactDetailsBuilder();
+                    //Create a new Address Book BL object using Dependency Injection
+                   
+                    ContactDetails_BL contactDetails_BL = new ContactDetails_BL(new ContactDetailsBuilder());
                     Console.WriteLine("\nEnter the Address Book name: ");
                     String unique_Name = Console.ReadLine();
                     string field_Input;
 
                     //set the Address Book name
-                    new_AddressBook.set_AddressBook_Name(unique_Name);
+                    
+                    contactDetails_BL.set_AddressBook_Name(unique_Name);
                     
                     //Adding current Address book to global List
-                    address_book_list.Add(unique_Name, new_AddressBook);
+                    address_book_list.Add(unique_Name, contactDetails_BL);
 
                     //Loop for Contact based operation for each Address Book
                     while (exit_Prgram != true)
@@ -141,52 +143,63 @@ namespace AddressBookProgram
                                 }
 
                                 //Pasing appended string to AddContact Method
-                                new_AddressBook.AddContact(input_String);
+                                contactDetails_BL.AddContact(input_String);
+                                
                                 
                                 break;
 
                             case 2: // Editing Contact
                                 Console.WriteLine("\n Enter the first name and last name <firstName>,<lastName> of that contact you want to edit: \n");
                                 input_String = Console.ReadLine();
-                                new_AddressBook.EditContactDetails(input_String);
+                                
+                                contactDetails_BL.EditContactDetails(input_String);
                                 break;
 
                             case 3: // Deleting Contact
                                 Console.WriteLine("\n Enter the first name and last name <firstName>,<lastName> of contact you want to delete: \n");
                                 input_String = Console.ReadLine();
-                                new_AddressBook.DeleteContact(input_String);
+                                
+                                contactDetails_BL.DeleteContact(input_String);
                                 break;
 
                             case 4: // Print Contacts
-                                new_AddressBook.getPersonDetails();
+                                
+                                contactDetails_BL.getPersonDetails();
                                 break;
 
                             case 5: // Print Contacts from particular city/state
-                                new_AddressBook.get_PersonDetails_By_City_or_State();
+                                
+                                contactDetails_BL.get_PersonDetails_By_City_or_State();
                                 break;
 
                             case 6: // Sort the list wrt first name in alphabetical order
-                                new_AddressBook.sort_Aphabetically();
+                                
+                                contactDetails_BL.sort_Aphabetically();
                                 break;
 
                             case 7: // Sort the list wrt State/City/Zip
-                                new_AddressBook.sort_By_StateCityZip();
+                                
+                                contactDetails_BL.sort_By_StateCityZip();
                                 break;
 
                             case 8: // Write Contacts to JSON File
-                                new_AddressBook.WriteToAddressBook_UsingJSON();
+                                
+                                contactDetails_BL.WriteToAddressBook_UsingJSON();
                                 break;
 
                             case 9: // Read Contacts from JSON File
-                                new_AddressBook.ReadFromAddressBook_UsingJSON();
+                                
+                                contactDetails_BL.ReadFromAddressBook_UsingJSON();
                                 break;
 
                             case 10: // Read Contacts from CSV File
-                                new_AddressBook.ReadFromAddressBook_UsingCSV();
+                                
+                                contactDetails_BL.ReadFromAddressBook_UsingCSV();
                                 break;
 
                             case 11: // Write Contacts to CSV File
-                                new_AddressBook.WriteToAddressBook_UsingCSV();
+                                
+                                contactDetails_BL.WriteToAddressBook_UsingCSV();
                                 break;
 
                             case 12: // Exit current Operations loop
