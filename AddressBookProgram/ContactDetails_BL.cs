@@ -123,14 +123,19 @@ namespace AddressBookProgram
 
         public void InsertContact_into_DB(string bookName, List<ContactDetail> contactList)
         {
-
-            Parallel.ForEach(contactList, (contact) =>
+            // List is not empty
+            if (contactList.Count != 0)
             {
-                if (classDetailsBuilder.InsertContact_into_DB(bookName, contact) == true)
-                    Console.WriteLine("Contact Added!\n");
-                else
-                    Console.WriteLine("Insertion Failed\n");
-            });
+                Parallel.ForEach(contactList, (contact) =>
+                {
+                    if (classDetailsBuilder.InsertContact_into_DB(bookName, contact) == true)
+                        Console.WriteLine("Contact Added!\n");
+                    else
+                        Console.WriteLine("Insertion Failed\n");
+                });
+            }
+            else
+                Console.WriteLine("Contact List is Empty, insertion failed ! \n");
             
         }
 

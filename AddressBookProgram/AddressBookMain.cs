@@ -243,7 +243,7 @@ namespace AddressBookProgram
                                 break;
 
                             default: // for invalid switch input
-                                Console.WriteLine("Invalid Input");
+                                Console.WriteLine("Invalid Input \n");
                                 break;
                         }
 

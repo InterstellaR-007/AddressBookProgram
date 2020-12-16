@@ -152,19 +152,19 @@ namespace AddressBookProgram
                 case 1:
                     //Sorting using city field
                     contact_List.Sort((x, y) => x.city.CompareTo(y.city));
-                    Console.WriteLine("Sorting is Done using City");
+                    Console.WriteLine("Sorting is Done using City \n");
                     printContactDetails();
                     break;
                 case 2:
                     //Sorting using state field
                     contact_List.Sort((x, y) => x.state.CompareTo(y.state));
-                    Console.WriteLine("Sorting is Done using State");
+                    Console.WriteLine("Sorting is Done using State\n ");
                     printContactDetails();
                     break;
                 case 3:
                     //Sorting using zipcode field
                     contact_List.Sort((x, y) => x.pincode.CompareTo(y.pincode));
-                    Console.WriteLine("Sorting is Done using Zip Code");
+                    Console.WriteLine("Sorting is Done using Zip Code\n ");
                     printContactDetails();
                     break;
 
@@ -179,12 +179,12 @@ namespace AddressBookProgram
         public void sort_Aphabetically()
         {
             if (contact_List.Count == 0)
-                Console.WriteLine("No data Entered to sort");
+                Console.WriteLine("\n No data Entered to sort \n");
             else
             {
                 List<ContactDetailsBuilder> sorted_Contact_List = new List<ContactDetailsBuilder>();
                 contact_List.Sort((x, y) => x.first_Name.CompareTo(y.first_Name));
-                Console.WriteLine("Sorting is Done using First name");
+                Console.WriteLine("\n Sorting is Done using First name\n");
             }
         }
 
@@ -204,7 +204,7 @@ namespace AddressBookProgram
             //Check Duplicate withing existing records
             if (CheckDuplicate(input_Field_Value[0],input_Field_Value[1]))
             {
-                Console.WriteLine("Person already exists in Record");
+                Console.WriteLine("\n Person already exists in Record\n ");
             }
             else
             {
@@ -221,7 +221,7 @@ namespace AddressBookProgram
                 person.email = input_Field_Value[7];
 
                 contact_List.Add(person);
-                Console.WriteLine("Contact Added");
+                Console.WriteLine("\n Contact Added \n");
             }
 
             
@@ -378,7 +378,7 @@ namespace AddressBookProgram
                 Console.WriteLine("Contact Deleted !\n ");
             }
             else
-                Console.WriteLine("Contact Not Found !");
+                Console.WriteLine("Contact Not Found !\n");
             
 
         }
@@ -439,7 +439,7 @@ namespace AddressBookProgram
                             break;
                     }
 
-                    Console.WriteLine("Field Updated ! \n ");
+                    Console.WriteLine("\n Field Updated ! \n ");
 
 
 
