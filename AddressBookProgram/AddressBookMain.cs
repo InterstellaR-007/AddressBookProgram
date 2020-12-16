@@ -104,7 +104,12 @@ namespace AddressBookProgram
                         Console.WriteLine("9: Read from Address Book JSON file");
                         Console.WriteLine("10: Read from Address Book CSV file");
                         Console.WriteLine("11: Write to Address Book CSV file");
-                        Console.WriteLine("12: Exit Program\n");
+                        Console.WriteLine("\n Database Operations \n");
+                        Console.WriteLine("12: Insert Current Contacts to Database");
+                        Console.WriteLine("13: Delete a Contact from Database");
+                        Console.WriteLine("14: Read Contact List from Database");
+                        Console.WriteLine("15: Exit Program\n");
+
 
                         input_Option = int.Parse(Console.ReadLine());
                         switch (input_Option)
@@ -202,7 +207,38 @@ namespace AddressBookProgram
                                 contactDetails_BL.WriteToAddressBook_UsingCSV();
                                 break;
 
-                            case 12: // Exit current Operations loop
+                            case 12: //List of current Local Contacts added to Database using TPL Library(Threads)
+
+                                List<ContactDetail> current_Contacts = contactDetails_BL.GetContactDetails();
+
+                                contactDetails_BL.InsertContact_into_DB(unique_Name,current_Contacts);
+
+                                break;
+
+                            case 13: // Delete Contact based on Contact Name
+
+                                Console.WriteLine("\n Enter the Person First Name:");
+                                string first_Name = Console.ReadLine();
+
+                                Console.WriteLine("Enter the person Last Name:");
+                                string last_Name = Console.ReadLine();
+
+
+                                if (contactDetails_BL.DeleteContact_fromDB(unique_Name, first_Name, last_Name))
+                                {
+                                    Console.WriteLine("Contact Deleted");
+                                }
+                                else
+                                    Console.WriteLine("Deletion Failed");
+
+                                break;
+
+                            case 14: //Read Contact Details of person from AddressBook Table in DB
+
+                                contactDetails_BL.ReadContacts_fromDB(unique_Name);
+                                break;
+
+                            case 15: // Exit current Operations loop
                                 exit_Prgram = true;
                                 break;
 

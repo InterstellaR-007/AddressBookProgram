@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -27,6 +28,8 @@ namespace AddressBookProgram
 
         //Tabular formating for Contact Fields with fixed spacing
         string Field_Title = String.Format("{0,-15}{1,-15}{2,-15}{3,-15}{4,-15}{5,-15}{6,-15}{7,-15}\n", "First Name", "Last Name", "Address", "City", "State", "PinCode", "phn Num", "Email");
+
+        string Field_Title_DB = String.Format("{0,-15}{1,-15}{2,-15}{3,-15}{4,-15}{5,-15}{6,-15}{7,-15}{8,-15}\n", "Book Name","First Name", "Last Name", "Address", "City", "State", "PinCode", "phn Num", "Email");
 
 
 
@@ -150,19 +153,19 @@ namespace AddressBookProgram
                     //Sorting using city field
                     contact_List.Sort((x, y) => x.city.CompareTo(y.city));
                     Console.WriteLine("Sorting is Done using City");
-                    getPersonDetails();
+                    printContactDetails();
                     break;
                 case 2:
                     //Sorting using state field
                     contact_List.Sort((x, y) => x.state.CompareTo(y.state));
                     Console.WriteLine("Sorting is Done using State");
-                    getPersonDetails();
+                    printContactDetails();
                     break;
                 case 3:
                     //Sorting using zipcode field
                     contact_List.Sort((x, y) => x.pincode.CompareTo(y.pincode));
                     Console.WriteLine("Sorting is Done using Zip Code");
-                    getPersonDetails();
+                    printContactDetails();
                     break;
 
             }
@@ -225,16 +228,24 @@ namespace AddressBookProgram
 
             }
 
+        public List<ContactDetail> GetContactDetails()
+        {
+            return contact_List;
+        }
+
 
 
         /// <summary>
         /// Gets the person details.
         /// </summary>
-        public void getPersonDetails()
+        public List<ContactDetail> printContactDetails()
         {
-            
+
             if (contact_List.Count == 0)
+            {
                 Console.WriteLine("No records exist");
+                return null;
+            }
             else
             {
                 //Displays total count
@@ -248,6 +259,8 @@ namespace AddressBookProgram
                     Console.WriteLine(tabular_Output);
 
                 }
+
+                return contact_List;
 
             }
         }
@@ -437,6 +450,220 @@ namespace AddressBookProgram
                 Console.WriteLine("Contact not found \n");
 
 
+        }
+
+        public static string connection = @"Data Source=(localdb)\localdb_2;Initial Catalog=AddressBookService;Integrated Security=True";
+
+        /// <summary>
+        /// Inserts the contact into database.
+        /// </summary>
+        /// <param name="bookName">Name of the book.</param>
+        /// <param name="contact">The contact.</param>
+        /// <returns></returns>
+        public bool InsertContact_into_DB(string bookName, ContactDetail contact)
+        {
+            // DML statement for inserting Employee object stored as String
+            string sql = String.Format("Insert into AddressBook_ADO(book_name,first_Name,last_Name,address,city,state,zip,phone_Number,email)" + "Values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')",
+                bookName, contact.first_Name, contact.last_Name, contact.address, contact.city,contact.state,contact.pincode,contact.phoneNum,contact.email);
+
+
+            try
+            {
+                using (SqlConnection sqlConnection_add = new SqlConnection(connection))
+                {
+
+                    //set command with sql string argument
+                    SqlCommand command = new SqlCommand(sql, sqlConnection_add);
+
+                    //Open connection
+                    sqlConnection_add.Open();
+
+                    //Executing DML operation, getting affect rows due to operation
+                    int rows_Affected = command.ExecuteNonQuery();
+
+
+                    //If insertion affected the rows in table
+                    if (rows_Affected == 1)
+                    {
+                        //Set Insertion flag returning it True
+                        return true;
+
+
+                    }
+
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+
+            return false;
+        }
+
+        /// <summary>
+        /// Deletes the contact from database.
+        /// </summary>
+        /// <param name="bookName">Name of the book.</param>
+        /// <param name="firstName">The first name.</param>
+        /// <param name="LastName">The last name.</param>
+        /// <returns></returns>
+        public bool DeleteContact_fromDB(string bookName, string firstName, string LastName)
+        {
+            // DML statement for inserting Contact object stored as String
+            string sql = String.Format("Delete from AddressBook_ADO where book_name='{0}' and first_Name ='{1}' and last_Name='{2}'", bookName,firstName,LastName );
+
+
+            try
+            {
+                using (SqlConnection sqlConnection_Del = new SqlConnection(connection))
+                {
+
+                    //set command with sql string argument
+                    SqlCommand command = new SqlCommand(sql, sqlConnection_Del);
+                    sqlConnection_Del.Open();
+
+                    //Execute Deletion operation 
+                    int rows_Affected = command.ExecuteNonQuery();
+
+                    //If deletion affected the rows
+                    if (rows_Affected > 0)
+                    {
+                        //set Deletion flag to True and return
+                        return true;
+
+
+                    }
+
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
+
+            return false;
+        }
+
+
+        /// <summary>
+        /// Updates the contact in database.
+        /// </summary>
+        /// <param name="first_Name">The first name.</param>
+        /// <param name="last_Name">The last name.</param>
+        /// <param name="bookName">Name of the book.</param>
+        /// <param name="contact">The contact.</param>
+        /// <returns></returns>
+        public bool UpdateContact_inDB(string first_Name,string last_Name,string bookName, ContactDetail contact)
+        {
+            try
+            {
+                using (SqlConnection sqlConnection_Upt = new SqlConnection(connection))
+                {
+
+                    sqlConnection_Upt.Open();
+                    ContactDetail contact1 = new ContactDetail();
+
+                    //setting command type as stored procedure
+                    SqlCommand command = new SqlCommand("updateContactDetail", sqlConnection_Upt);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    //Setting parameters for stored procedure, passed as arguments
+                    command.Parameters.AddWithValue("@in_book_name", bookName);
+                    command.Parameters.AddWithValue("@in_first_Name", first_Name);
+                    command.Parameters.AddWithValue("@in_last_Name", last_Name);
+                    command.Parameters.AddWithValue("@book_name", bookName);
+                    command.Parameters.AddWithValue("@first_Name", contact1.first_Name);
+                    command.Parameters.AddWithValue("@last_Name", contact1.last_Name);
+                    command.Parameters.AddWithValue("@address", contact1.address);
+                    command.Parameters.AddWithValue("@city", contact1.city);
+                    command.Parameters.AddWithValue("@state", contact1.state);
+                    command.Parameters.AddWithValue("@zip", contact1.pincode);
+                    command.Parameters.AddWithValue("@phone_Number", contact1.phoneNum);
+                    command.Parameters.AddWithValue("@email", contact1.email);
+                    
+
+                    //get affected rows count
+                    int affected_Rows = command.ExecuteNonQuery();
+
+                    //if rows affected
+                    if (affected_Rows > 0)
+                    {
+                        return true;
+
+
+                    }
+                    else
+                    {
+                        //Data with that particular details doesnt exist
+                        Console.WriteLine("No data found");
+                    }
+
+
+
+
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Reads the contacts from database.
+        /// </summary>
+        /// <param name="bookName">Name of the book.</param>
+        /// <exception cref="Exception"></exception>
+        public void ReadContacts_fromDB(string bookName)
+        {
+            try
+            {
+                ContactDetail contact = new ContactDetail();
+                using (SqlConnection sqlConnection_Read = new SqlConnection(connection))
+                {
+
+                    string query = String.Format("Select * from AddressBook_ADO where book_name='{0}'",bookName);
+
+                    SqlCommand cmd = new SqlCommand(query, sqlConnection_Read);
+
+                    sqlConnection_Read.Open();
+                    SqlDataReader sqlDataReader = cmd.ExecuteReader();
+
+
+                    if (sqlDataReader.HasRows)
+                    {
+                        Console.WriteLine(Field_Title_DB);
+                        while (sqlDataReader.Read())
+                        {
+                            
+
+                            string tabular_Output = String.Format("{0,-15}{1,-15}{2,-15}{3,-15}{4,-15}{5,-15}{6,-15}{7,-15}{8,-15}",
+                                sqlDataReader.GetString(0), sqlDataReader.GetString(1), sqlDataReader.GetString(2), sqlDataReader.GetString(3), sqlDataReader.GetString(4), sqlDataReader.GetString(5), sqlDataReader.GetString(6), sqlDataReader.GetString(7), sqlDataReader.GetString(8));
+
+                            Console.WriteLine(tabular_Output);
+                        }
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("no data ");
+
+                    }
+                    sqlDataReader.Close();
+
+
+                }
+
+            }
+            catch (SqlException e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }

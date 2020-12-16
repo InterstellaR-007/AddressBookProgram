@@ -12,7 +12,8 @@ namespace AddressBookProgram
 
         public void set_AddressBook_Name(String unique_Name);
         public void AddContact(String input_string);
-        public void getPersonDetails();
+        public List<ContactDetail> GetContactDetails();
+        public List<ContactDetail> printContactDetails();
         public void get_PersonDetails_By_City_or_State();
 
         public void sort_By_StateCityZip();
@@ -25,6 +26,11 @@ namespace AddressBookProgram
         public void sort_Aphabetically();
         public void DeleteContact(String input_detail);
         public void EditContactDetails(String input_detail);
+
+        public bool InsertContact_into_DB(string bookName,ContactDetail contact);
+        public bool DeleteContact_fromDB(string bookName, string firstName, string LastName);
+        public bool UpdateContact_inDB(string first_Name,string last_Name,string bookName, ContactDetail contact);
+        public void ReadContacts_fromDB(string bookName);
 
 
     }

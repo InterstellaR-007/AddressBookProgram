@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AddressBookProgram
 {
@@ -37,12 +38,17 @@ namespace AddressBookProgram
             classDetailsBuilder.AddContact(input_string);
         }
 
+        public List<ContactDetail> GetContactDetails()
+        {
+            return classDetailsBuilder.GetContactDetails();
+        }
+
         /// <summary>
         /// Gets the person details.
         /// </summary>
-        public void getPersonDetails()
+        public List<ContactDetail> getPersonDetails()
         {
-            classDetailsBuilder.getPersonDetails();
+            return classDetailsBuilder.printContactDetails();
         }
         /// <summary>
         /// Gets the state of the person details by city or.
@@ -115,5 +121,33 @@ namespace AddressBookProgram
             classDetailsBuilder.EditContactDetails(input_detail);
         }
 
+        public void InsertContact_into_DB(string bookName, List<ContactDetail> contactList)
+        {
+
+            Parallel.ForEach(contactList, (contact) =>
+            {
+                if (classDetailsBuilder.InsertContact_into_DB(bookName, contact) == true)
+                    Console.WriteLine("Contact Added!\n");
+                else
+                    Console.WriteLine("Insertion Failed\n");
+            });
+            
+        }
+
+        public bool DeleteContact_fromDB(string bookName, string firstName, string LastName)
+        {
+            return classDetailsBuilder.DeleteContact_fromDB(bookName, firstName, LastName);
+        }
+
+        public bool UpdateContact_inDB(string first_Name, string last_Name, string bookName, ContactDetail contact)
+        {
+            return classDetailsBuilder.UpdateContact_inDB(first_Name, last_Name, bookName, contact);
+        }
+
+        public void ReadContacts_fromDB(string bookName)
+        {
+            
+            classDetailsBuilder.ReadContacts_fromDB(bookName);
+        }
     }
 }
